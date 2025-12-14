@@ -53,7 +53,7 @@
 //create the board using html and CSS & JS.
 //Come up with instructions for the game.
 //create the inital position of Player 1 & Player 2's boards.
-//Define the variables we want to use to track the state of the game. Including: left board, right board, hits (P1 & P2), misses (P1 & P2), turn, winner, ships sunk (P1 & P2).
+//Define the variables we want to use to track the state of the game. Including: left board, right board, hits (P1 & P2), shots (P1 & P2), turn, winner, ships sunk (P1 & P2).
 //Define the variables to reference the cached elements of the DOM. Including: start button, player 1 button, player 2 button, reset button, board, messages.
 //Create the ship objects for both players with properties - 2D array (horiz), 2D array (vert), hits, sunk, postiion.
 //Create the two states being shown to the players. Player 1 state - the left hand grid is uncovered and the right covered. Player 2 state - the oppposite.
@@ -86,15 +86,176 @@
 
 /*-------------------------------- Variables --------------------------------*/
 
+const width = 10;
+const height = 10;
+let leftGrid;
+let rightGrid;
+let p1Hits;
+let p2Hits;
+let p1Shots;
+let p2Shots;
+let p1ShipsSunk;
+let p1SipsSunk;
+let turn;
+let winner;
+
 
 /*------------------------ Cached Element References ------------------------*/
 
+const leftGridElement = document.querySelector('#left-grid');
+const rightGridElement = document.querySelector('#right-grid');
+const startButtonElement = document.querySelector('#start-button');
+const resetButtonElement = document.querySelector('#reset-button');
+const p1ButtonElement = document.querySelector('#p1-button');
+const p2ButtonElement = document.querySelector('#p2-button');
+const messegeElement = document.querySelector('#messages');
+let leftCellEls = [];
+let rightCellEls = [];
+
 
 /*-------------------------------- Functions --------------------------------*/
+
+class ship {
+        constructor(name, size) {
+    this.name = name;
+    this.size = size;
+    this.arr = Array(size).fill(1);
+    this.horizontal = true;
+  };
+  makeVertical () {
+        this.horizontal = false;
+  };
+};
+//5 types of ship:
+const carrier = new ship('Carrier', 5);
+const battleship= new ship('Battleship', 4);
+const destroyer = new ship('Destroyer', 3);
+const submarine = new ship('Submarine', 3);
+const patrolBoat = new ship('Patrol Boat', 2);
+
+console.log(carrier);
+
+//Used to create both the left and the right grid in the game.
+const createGrid = () => {
+        for (let row=0; row< height; row++) {
+                // const leftRows = [];
+                // const rightRows = [];
+                for (let col=0; col<width; col++) {
+                        leftCellEls = document.createElement('div')
+                        leftCellEls.classList.add('left-cell');
+                        leftCellEls.id = `L${row}${col}`;
+                        leftGridElement.appendChild(leftCellEls);
+                        // leftRows.push(leftCellEls);
+                        rightCellEls = document.createElement('div')
+                        rightCellEls.classList.add('right-cell');
+                        rightCellEls.id = `R${row}${col}`;
+                        rightGridElement.appendChild(rightCellEls);
+                        // rightRows.push(rightCellEls);
+                };
+        // leftGrid.push(leftRows);
+        // rightGrid.push(rightRows);
+        };
+};
+
+
+const updateBoard = () => {
+        updateLeftBoard();
+        updateRightBoard();
+};
+
+const updateLeftBoard = () => {
+        for (let row=0; row<height; row++) {
+                 for (let col=0; col<width; col++) {
+        const index = (row * 10) + col;
+        const cellEl = leftCellEls[index];
+                    if (leftGrid[row][col] === 1) {
+                        cellEl.classList.add('ship');
+                    } else if (rightGrid[row][col] === 2) {
+                        cellEl.classList.add('ship');
+                        cellEl.textContent = 'X';
+                        cellEl.style.color = 'red';
+                        //this signifies a hit
+                    } else if  (rightGrid[row][col] === 3) {
+                        cellEl.textContent = 'X';
+                        //This signifies a miss 
+                    };
+                 };
+        };
+};
+
+const updateRightBoard = () => {
+        for (let row=0; row<height; row++) {
+                 for (let col=0; col<width; col++) {
+        const index = (row * 10) + col;
+        const cellEl = rightCellEls[index];
+                    if (rightGrid[row][col] === 1) {
+                        cellEl.classList.add('ship');
+                        //this logs a square as a ship
+                    } else if (rightGrid[row][col] === 2) {
+                        cellEl.classList.add('ship');
+                        cellEl.textContent = 'X';
+                        cellEl.style.color = 'red';
+                        //this signifies a hit
+                    } else if  (rightGrid[row][col] === 3) {
+                        cellEl.textContent = 'X';
+                        //This signifies a miss 
+                    };
+                 };
+        };
+};
+
+// const updateMessage = () => {};
+
+const render = () => {
+        updateBoard();
+        // updateMessage();
+};
+
+
+
+const init = () => {
+        createGrid();
+        leftGrid =     [[0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,1,0,1,1,0,0,0,0],
+                        [0,0,1,0,0,0,0,1,0,1],
+                        [0,0,1,0,0,0,0,1,0,1],
+                        [0,0,1,0,0,0,0,1,0,1],
+                        [0,0,1,0,0,0,0,0,0,1],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,1,1,1,0,0,0,0]]
+        rightGrid =    [[0,1,0,0,0,0,0,0,0,0],
+                        [0,1,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [1,0,0,0,0,0,0,0,0,0],
+                        [1,0,0,0,0,0,0,0,0,0],
+                        [1,0,0,0,0,1,1,1,1,1],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [1,1,1,1,0,0,0,1,0,0],
+                        [0,0,0,0,0,0,0,1,0,0],
+                        [0,0,0,0,0,0,0,1,0,0]]
+        p1Hits = 0;
+        p2Hits = 0;
+        p1Shots = 0;
+        p2Shots = 0;
+        p1ShipsSunk = 0;
+        p1SipsSunk = 0;
+        turn = 'P1';
+        winner = false;
+        leftCellEls = document.querySelectorAll('#left-grid div');
+        rightCellEls = document.querySelectorAll('#right-grid div');
+        render()
+};
+
+
+init();
+
+
 
 /*-----------------------------Callback Functions --------------------------------*/
 
 /*----------------------------- Event Listeners -----------------------------*/
 
 
-/*------------------------------- Page Load ------------------------------*/~
+/*------------------------------- Page Load ------------------------------*/

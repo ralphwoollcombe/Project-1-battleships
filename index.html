@@ -3,37 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>project-1-battleships</title>
     <script defer src="./js/app.js"></script>
     <link rel ="stylesheet" href="./css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Fjalla+One&family=Londrina+Shadow&family=Mansalva&family=Poller+One&family=Roboto:ital,wght@0,100..900;1,100..900&family=Shadows+Into+Light&family=Wellfleet&display=swap" rel="stylesheet">
 </head>
 <body>
-    <section class="board">
-        <div class="sqr" id="r0c0"></div>
-        <div class="sqr" id="r1c1"></div>
-        <div class="sqr" id="2"></div>
-        <div class="sqr" id="3"></div>
-        <div class="sqr" id="4"></div>
-        <div class="sqr" id="5"></div>
-        <div class="sqr" id="6"></div>
-        <div class="sqr" id="7"></div>
-        <div class="sqr" id="8"></div>
-        <div class="sqr" id="9"></div>
-        <div class="sqr" id="10"></div>
-        <div class="sqr" id="11"></div>
-        <div class="sqr" id="12"></div>
-        <div class="sqr" id="13"></div>
-        <div class="sqr" id="14"></div>
-        <div class="sqr" id="15"></div>
-        <div class="sqr" id="16"></div>
-        <div class="sqr" id="17"></div>
-        <div class="sqr" id="18"></div>
-        <div class="sqr" id="19"></div>
-        <div class="sqr" id="20"></div>
-        <div class="sqr" id="21"></div>
-        <div class="sqr" id="22"></div>
-        <div class="sqr" id="23"></div>
-        <div class="sqr" id="24"></div>
-    </section>
+    <h1>Battleships</h1>
+    <p id="messages">Message board</p>
+    <div id="grid-wrapper">
+        <div class ="column" id="left-grid-wrapper">
+            <h2 class="grid-title" id="left-grid-title">Player 1 gameboard</h2>
+            <div class="grid" id="left-grid"></div>
+        </div>
+        <div class ="column" id="right-grid-wrapper">
+            <h2 class="grid-title" id="right-grid-title">Player 2 gameboard</h2>
+            <div class="grid" id ="right-grid"></div>
+        </div>
+    </div>
+    <div>
+        <button class="button" id="p1-button">Player 1 turn</button>
+        <button class="button" id="p2-button">Player 2 turn</button>
+    </div>
+    <div>
+        <button class="button" id="start-button">Start</button>
+        <button class="button" id="reset-button">Reset</button>    
+    </div>
 </body>
 </html>
