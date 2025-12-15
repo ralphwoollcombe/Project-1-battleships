@@ -229,30 +229,65 @@ const updateRightBoard = () => {
 };
 
 //this function checks for whether turn is equal to p1 or p2 and covers the other board
-const whichPlayer = () => {
+const switchPlayer = () => {
         leftShipEls = document.querySelectorAll('.left-cell.ship');
         rightShipEls = document.querySelectorAll('.right-cell.ship');
-        // console.log(rightShipEls);
         if (turn === 'p1') {
-        rightShipEls.forEach(cell => {
-                cell.classList.add('covered-board')})
         leftShipEls.forEach(cell => {
-                cell.classList.remove('covered-board')})
+                cell.classList.add('covered-board')})
+        turn = '';
+        p2ButtonElement.classList.remove('hidden');
         } else if (turn === 'p2') {
-        leftShipEls.forEach(cell => {
-                cell.classList.add('covered-board')})
         rightShipEls.forEach(cell => {
-                cell.classList.remove('covered-board')})
+                cell.classList.add('covered-board')})
+        turn = '';
+        p1ButtonElement.classList.remove('hidden');
         };
 };
+
+//P1 clicks on a space on the P2 board.
+//P1 left grid board gets hidden. 
+//turn now equals ''.
+//P2 button appears on the screen on top of the P2 board
+//P1 listeners return nothing if clicked.
+//P2 button clicked and switchs turn to P2.
+//P2 grid now shown to P2
+
+
 // const updateMessage = () => {};
 
 const handleLeftClick = (event) => {
         cellRow = event.target.id[1];
         cellCol = event.target.id[2];
+        console.log(turn)
+     if (turn === 'p1') {return}
+     else if (turn === 'p2') {
      if (leftGrid[cellRow][cellCol] === 0) {
-        
-     }
+        leftGrid[cellRow][cellCol] = 3;
+       switchPlayer();
+     } else if (leftGrid[cellRow][cellCol] === 1) {
+        leftGrid[cellRow][cellCol] = 2;
+        switchPlayer();
+     } else {return};
+};
+};
+
+const handleRightClick = (event) => {
+        cellRow = event.target.id[1];
+        cellCol = event.target.id[2];
+        console.log(turn)
+     if (turn === 'p2') {return}
+     else if (turn === 'p1') {
+     if (rightGrid[cellRow][cellCol] === 0) {
+        rightGrid[cellRow][cellCol] = 3;
+        switchPlayer();
+        console.log(leftGrid);
+console.log(rightGrid);
+     } else if (rightGrid[cellRow][cellCol] === 1) {
+        rightGrid[cellRow][cellCol] = 2;
+        switchPlayer();
+     } else {return};
+};
 };
 
 const render = () => {
@@ -295,20 +330,44 @@ const init = () => {
         leftCellEls = document.querySelectorAll('#left-grid div');
         rightCellEls = document.querySelectorAll('#right-grid div');
         render()
+        rightShipEls = document.querySelectorAll('.right-cell.ship');
+         rightShipEls.forEach(cell => {
+                cell.classList.add('covered-board')})
 };
 
 
 init();
-whichPlayer();
-
+// switchPlayer()
+console.log(turn)
+console.log(p1ButtonElement)
 
 
 /*-----------------------------Callback Functions --------------------------------*/
 
 /*----------------------------- Event Listeners -----------------------------*/
 // leftCellEls.forEach(cell => {cell.addEventListener('mouseover', )});
-leftCellEls.forEach(cell => {cell.addEventListener('click', handleLeftClick)
-});
+
 // rightCellEls.forEach(cell => {cell.addEventListener('click', handleRightClick)
 // });
+
+leftCellEls.forEach(cell => {cell.addEventListener('click', handleLeftClick)
+});
+ rightCellEls.forEach(cell => {cell.addEventListener('click', handleRightClick)
+});
+p1ButtonElement.addEventListener('click', (event) => {
+        if (turn) {return
+        } else {leftShipEls.forEach(cell => {
+        cell.classList.remove('covered-board')})
+        p1ButtonElement.classList.add('hidden');
+        turn = 'p1';
+}
+})
+p2ButtonElement.addEventListener('click', (event) => {
+        if (turn) {return
+        } else {rightShipEls.forEach(cell => {
+        cell.classList.remove('covered-board')})
+        p2ButtonElement.classList.add('hidden');
+        turn = 'p2';
+}
+})
 /*------------------------------- Page Load ------------------------------*/

@@ -75,10 +75,14 @@ body {
 
 .player-buttons {
     position: absolute;
-    top: 370px;
+    top: 600px;
     /* left: 400px; */
 }
 
 #p2-button {
    left: 400px;
+}
+
+.hidden {
+    display: none;
 }
