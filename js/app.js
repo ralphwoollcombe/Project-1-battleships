@@ -81,8 +81,16 @@
 //2. How can I build a randomized game board each time a new game is reset - surely this is as hard as playing against the computer.
 //3. Should I be building the grids in html or should I create it in JS completely.
 
-
-
+//MAIN CHALLENGES:
+//1. Working out how to work with newly created HTML elements in JS. 
+// And then how to cache them in the DOM after creating them. They are different to the tracked variable and standard cached elements as they need to be declared in global scope, 
+// but then properly cached in function scope after they've been created.
+//2. Working out the inheritance ordering in CSS was really hard. What I eventually realised is that creating a CSS block with multiple classes is more specific so wins on inheritance than a block for just a single class.
+//After this, if the blocks have the same specificity then its the lower block that wins on inheritance, hence why .cell.ship.covered-board was lower than the other sections.
+//3. Another classic thing that I keep finding difficult is selecting multiple elements but the treating them as a singular variable not an array. 
+// I declared the leftShipEls and rightShipEls and even though they are literally puralised I couldn't work out for ages why my IF statement wasn't working! Turns out I needed to iterate through them duh!
+//Similarly to the leftCellEls & rightCellEls arrays I have now declared them as arrays which helps to remember they are arrays.
+//4.
 
 /*-------------------------------- Variables --------------------------------*/
 
@@ -99,7 +107,6 @@ let p1SipsSunk;
 let turn;
 let winner;
 
-
 /*------------------------ Cached Element References ------------------------*/
 
 const leftGridElement = document.querySelector('#left-grid');
@@ -111,49 +118,60 @@ const p2ButtonElement = document.querySelector('#p2-button');
 const messegeElement = document.querySelector('#messages');
 let leftCellEls = [];
 let rightCellEls = [];
-
+let leftShipEls = [];
+let rightShipEls = [];
 
 /*-------------------------------- Functions --------------------------------*/
 
-class ship {
+//this is to declare new ship objects with various properties 
+// - name, size (in cells), as an array (for later refactors), whether sunk and how many hits.
+//need to be capitalised.
+class Ship {
         constructor(name, size) {
     this.name = name;
     this.size = size;
-    this.arr = Array(size).fill(1);
+//the array constructor, if taking one argument takes the length of the array. 
+//Andrew Burgess video super helpful. https://www.youtube.com/watch?v=cGZD_0RODh4
+    this.arr = new Array(size).fill(1);
     this.horizontal = true;
+    this.sunk = false;
+    this.hits = 0;
   };
+
   makeVertical () {
         this.horizontal = false;
   };
 };
-//5 types of ship:
-const carrier = new ship('Carrier', 5);
-const battleship= new ship('Battleship', 4);
-const destroyer = new ship('Destroyer', 3);
-const submarine = new ship('Submarine', 3);
-const patrolBoat = new ship('Patrol Boat', 2);
+//5 types of ship that each player gets:
+const carrier = new Ship('Carrier', 5);
+const battleship= new Ship('Battleship', 4);
+const destroyer = new Ship('Destroyer', 3);
+const submarine = new Ship('Submarine', 3);
+const patrolBoat = new Ship('Patrol Boat', 2);
 
-console.log(carrier);
+// console.log(carrier);
 
 //Used to create both the left and the right grid in the game.
 const createGrid = () => {
         for (let row=0; row< height; row++) {
-                // const leftRows = [];
-                // const rightRows = [];
                 for (let col=0; col<width; col++) {
+                //create all the cells on the left hand grind
                         leftCellEls = document.createElement('div')
+                //give the left hand grid cells all a class list of left-cell
                         leftCellEls.classList.add('left-cell');
+                //give all the left hand cells a class of cell.
+                        leftCellEls.classList.add('cell');
+                //give each of the cells a unique id: e.g. L43
                         leftCellEls.id = `L${row}${col}`;
+                //append all the left cell div elements to the left-grid div element
                         leftGridElement.appendChild(leftCellEls);
-                        // leftRows.push(leftCellEls);
+                //do everything above to the right board
                         rightCellEls = document.createElement('div')
                         rightCellEls.classList.add('right-cell');
+                        rightCellEls.classList.add('cell');
                         rightCellEls.id = `R${row}${col}`;
                         rightGridElement.appendChild(rightCellEls);
-                        // rightRows.push(rightCellEls);
                 };
-        // leftGrid.push(leftRows);
-        // rightGrid.push(rightRows);
         };
 };
 
@@ -164,25 +182,32 @@ const updateBoard = () => {
 };
 
 const updateLeftBoard = () => {
+        //cycle through all the cells of the left grid
         for (let row=0; row<height; row++) {
                  for (let col=0; col<width; col++) {
+        // asign each of the iterations an index
         const index = (row * 10) + col;
+        //assign a variable to each cell interation.
         const cellEl = leftCellEls[index];
-                    if (leftGrid[row][col] === 1) {
+        //cycle through the left grid 2D array and if any elements have a value of 1 add the class of ship to the corresponding div cell          
+                if (leftGrid[row][col] === 1) {
                         cellEl.classList.add('ship');
-                    } else if (rightGrid[row][col] === 2) {
+                    } else if (leftGrid[row][col] === 2) {
                         cellEl.classList.add('ship');
                         cellEl.textContent = 'X';
-                        cellEl.style.color = 'red';
                         //this signifies a hit
-                    } else if  (rightGrid[row][col] === 3) {
+                    } else if  (leftGrid[row][col] === 3) {
+                        cellEl.classList.add('not-ship');
                         cellEl.textContent = 'X';
                         //This signifies a miss 
+                    } else {
+                        cellEl.classList.add('not-ship');
                     };
                  };
         };
 };
 
+//Key for the below: 0 is a blank square, 1 is an untouched ship, 2 is a hit ship, 3 is a missed square.
 const updateRightBoard = () => {
         for (let row=0; row<height; row++) {
                  for (let col=0; col<width; col++) {
@@ -190,21 +215,45 @@ const updateRightBoard = () => {
         const cellEl = rightCellEls[index];
                     if (rightGrid[row][col] === 1) {
                         cellEl.classList.add('ship');
-                        //this logs a square as a ship
                     } else if (rightGrid[row][col] === 2) {
                         cellEl.classList.add('ship');
                         cellEl.textContent = 'X';
-                        cellEl.style.color = 'red';
-                        //this signifies a hit
                     } else if  (rightGrid[row][col] === 3) {
+                        cellEl.classList.add('not-ship');
                         cellEl.textContent = 'X';
-                        //This signifies a miss 
+                    } else {
+                        cellEl.classList.add('not-ship');
                     };
                  };
         };
 };
 
+//this function checks for whether turn is equal to p1 or p2 and covers the other board
+const whichPlayer = () => {
+        leftShipEls = document.querySelectorAll('.left-cell.ship');
+        rightShipEls = document.querySelectorAll('.right-cell.ship');
+        // console.log(rightShipEls);
+        if (turn === 'p1') {
+        rightShipEls.forEach(cell => {
+                cell.classList.add('covered-board')})
+        leftShipEls.forEach(cell => {
+                cell.classList.remove('covered-board')})
+        } else if (turn === 'p2') {
+        leftShipEls.forEach(cell => {
+                cell.classList.add('covered-board')})
+        rightShipEls.forEach(cell => {
+                cell.classList.remove('covered-board')})
+        };
+};
 // const updateMessage = () => {};
+
+const handleLeftClick = (event) => {
+        cellRow = event.target.id[1];
+        cellCol = event.target.id[2];
+     if (leftGrid[cellRow][cellCol] === 0) {
+        
+     }
+};
 
 const render = () => {
         updateBoard();
@@ -241,7 +290,7 @@ const init = () => {
         p2Shots = 0;
         p1ShipsSunk = 0;
         p1SipsSunk = 0;
-        turn = 'P1';
+        turn = 'p1';
         winner = false;
         leftCellEls = document.querySelectorAll('#left-grid div');
         rightCellEls = document.querySelectorAll('#right-grid div');
@@ -250,12 +299,16 @@ const init = () => {
 
 
 init();
+whichPlayer();
 
 
 
 /*-----------------------------Callback Functions --------------------------------*/
 
 /*----------------------------- Event Listeners -----------------------------*/
-
-
+// leftCellEls.forEach(cell => {cell.addEventListener('mouseover', )});
+leftCellEls.forEach(cell => {cell.addEventListener('click', handleLeftClick)
+});
+// rightCellEls.forEach(cell => {cell.addEventListener('click', handleRightClick)
+// });
 /*------------------------------- Page Load ------------------------------*/
