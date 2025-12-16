@@ -100,6 +100,7 @@ let leftGrid;
 let rightGrid;
 let turn;
 let winner;
+let gameActive;
 
 
 //P1 variables:
@@ -197,6 +198,69 @@ const createGrid = () => {
         };
 };
 
+const hitTally = () => {
+        const p1HitTally = () => {
+                let tally = 0;
+        leftGrid.forEach((row) => {
+                        row.forEach((col) => {
+                                if (col === 2 || col === 4) {
+                                        tally += 1;
+                                };
+                        });
+        }); p1Hits = tally
+        console.log(p1Hits)
+        };
+        const p2HitTally = () => {
+                let tally = 0;
+        rightGrid.forEach((row) => {
+                        row.forEach((col) => {
+                                if (col === 2 || col === 4) {
+                                        tally += 1;
+                                };
+                        });
+        }); p2Hits = tally
+        console.log(p2Hits)
+        };
+        p1HitTally();
+        p2HitTally();
+};
+
+const winningShot = () => {
+        if (p1Hits === 17) {
+                winner = 'p1';
+                declareWinner();
+        } else if (p2Hits === 17) {
+                winner = 'p2';
+                declareWinner();
+        };
+};
+
+const declareWinner = () => {
+        if (winner ==='p1') {
+                //message to read "Player 1 has won the game!"
+                p1ButtonElement.classList.add('hidden');
+                p2ButtonElement.classList.add('hidden');
+                leftGrid.forEach(cell => {
+                        cell.classList.remove('covered-board');
+                        
+                });
+                rightGrid.forEach(cell => {
+                        cell.classList.remove('covered-board');
+                });
+        } else if (winner === 'p2') {
+                //message to read "Player 2 has won the game!"
+                p1ButtonElement.classList.add('hidden');
+                p2ButtonElement.classList.add('hidden');
+                leftShipEls.forEach(cell => {
+                        cell.classList.remove('covered-board');
+                        
+                });
+                rightShipEls.forEach(cell => {
+                        cell.classList.remove('covered-board');
+                });
+        };
+};
+
 const updateBoard = () => {
         updateLeftBoard();
         updateRightBoard();
@@ -226,7 +290,7 @@ const updateLeftBoard = () => {
                         //This signifies a miss 
                     } else if (leftGrid[row][col] === 4) {
                        cellEl.classList.add('ship');
-                       cellEl.textContent = 'X'; 
+                       cellEl.textContent = ''; 
                         flatLeftGrid[index] = 4;
                         let wreck = document.createElement('img');
                         wreck.src = "./assets/shipwreck.png";
@@ -300,12 +364,16 @@ const handleLeftClick = (event) => {
         switchPlayer();
         p1ShipSunk();
         p2ShipSunk();
+        hitTally();
+        winningShot();
      } else if (leftGrid[cellRow][cellCol] === 1) {
         leftGrid[cellRow][cellCol] = 2;
         render();
         switchPlayer();
         p1ShipSunk();
         p2ShipSunk();
+        hitTally();
+        winningShot();
      } else {return};
 };
 };
@@ -322,14 +390,18 @@ const handleRightClick = (event) => {
         switchPlayer();
         p1ShipSunk();
         p2ShipSunk();
-        console.log(leftGrid);
-console.log(rightGrid);
+        hitTally();
+        winningShot();
+        // console.log(leftGrid);
+        // console.log(rightGrid);
      } else if (rightGrid[cellRow][cellCol] === 1) {
         rightGrid[cellRow][cellCol] = 2;
         render();
         switchPlayer();
         p1ShipSunk();
         p2ShipSunk();
+        hitTally();
+        winningShot();
      } else {return};
 };
 };
@@ -339,7 +411,55 @@ const render = () => {
         // updateMessage();
 };
 
+//SHIP SUNK FUNCTIONS:
+const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, gridarr, flatgrid) => {
+         boatarr.forEach((cell, index) => {
+                        gridarr.push(flatgrid[cell]);
+                        boatsunk = gridarr.every((cell) => {
+                                return cell === 2;})                          
+                });
+                const ifSunk = (boatsunk, boatarr, grid, boat, playershipssunk) => {
+                        if (boatsunk) {
+                                boatarr.forEach((cell) => {
+//THIS IS BUGGY AND I NEED A NEW WAY OF DOING IT!!
+                                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                                grid[firstDigit][secondDigit] = 4;
+                                });
+                        console.log(`${boat} sunk!`);
+                        playershipssunk++;
+                        console.log(playershipssunk);
+                        render();
+                        };
+                };
+        ifSunk(boatsunk, boatarr, grid , boat, playershipssunk);
+};
+//P1 ships sunk
+const p1ShipSunk = () => {
+        let leftGridCarrierArr = [];
+        let leftGridBattleshipArr = [];
+        let leftGridDestroyerArr = [];
+        let leftGridSubmarineArr = [];
+        let leftGridPatrolBoatArr = [];
+        checkSunkSquares(p1CarrierSunk, p1Carrier.arr,leftGrid, 'Carrier', p1ShipsSunk, leftGridCarrierArr, flatLeftGrid );
+        checkSunkSquares(p1BattleshipSunk, p1Battleship.arr,leftGrid, 'BattleShip', p1ShipsSunk, leftGridBattleshipArr, flatLeftGrid);
+        checkSunkSquares(p1DestroyerSunk, p1Destroyer.arr,leftGrid, 'Destroyer', p1ShipsSunk, leftGridDestroyerArr, flatLeftGrid);
+        checkSunkSquares(p1SubmarineSunk, p1Submarine.arr,leftGrid, 'Submarine', p1ShipsSunk, leftGridSubmarineArr, flatLeftGrid);
+        checkSunkSquares(p1PatrolBoatSunk, p1PatrolBoat.arr,leftGrid, 'Patrol Boat', p1ShipsSunk, leftGridPatrolBoatArr, flatLeftGrid);
+};
 
+const p2ShipSunk = () => {
+        let rightGridCarrierArr = [];
+        let rightGridBattleshipArr = [];
+        let rightGridDestroyerArr = [];
+        let rightGridSubmarineArr = [];
+        let rightGridPatrolBoatArr = [];
+        checkSunkSquares(p2CarrierSunk, p2Carrier.arr, rightGrid, 'Carrier', p2ShipsSunk, rightGridCarrierArr, flatRightGrid);
+        checkSunkSquares(p2BattleshipSunk, p2Battleship.arr, rightGrid, 'Battleship', p2ShipsSunk, rightGridBattleshipArr, flatRightGrid);
+        checkSunkSquares(p2DestroyerSunk, p2Destroyer.arr, rightGrid, 'Destroyer', p2ShipsSunk, rightGridDestroyerArr, flatRightGrid);
+        checkSunkSquares(p2SubmarineSunk, p2Submarine.arr, rightGrid, 'Submarine', p2ShipsSunk, rightGridSubmarineArr, flatRightGrid);
+        checkSunkSquares(p2PatrolBoatSunk, p2PatrolBoat.arr, rightGrid, 'Patrol Boat', p2ShipsSunk, rightGridPatrolBoatArr, flatRightGrid);
+};
 
 const init = () => {
         createGrid();
@@ -368,7 +488,7 @@ const init = () => {
         p1Shots = 0;
         p2Shots = 0;
         p1ShipsSunk = 0;
-        p1SipsSunk = 0;
+        p2ShipsSunk = 0;
         turn = 'p1';
         winner = false;
         leftCellEls = document.querySelectorAll('#left-grid div');
@@ -417,52 +537,6 @@ p2ButtonElement.addEventListener('click', (event) => {
 }
 })
 /*------------------------------- Page Load ------------------------------*/
-//SHIP SUNK FUNCTIONS:
-const checkSunkSquares = (boatsunk, boatarr, grid, gridarr, flatgrid) => {
-         boatarr.forEach((cell, index) => {
-                        gridarr.push(flatgrid[cell]);
-                        boatsunk = gridarr.every((cell) => {
-                                return cell === 2;})                          
-                });
-                const ifSunk = (boatsunk, boatarr, grid) => {
-                if (boatsunk) {
-                boatarr.forEach((cell) => {
-//THIS IS BUGGY AND I NEED A NEW WAY OF DOING IT!!
-                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
-                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
-                grid[firstDigit][secondDigit] = 4;
-                });
-                render();
-        };
-};
-ifSunk(boatsunk, boatarr, grid);
-};
-//P1 ships sunk
-const p1ShipSunk = () => {
-        let leftGridCarrierArr = [];
-        let leftGridBattleshipArr = [];
-        let leftGridDestroyerArr = [];
-        let leftGridSubmarineArr = [];
-        let leftGridPatrolBoatArr = [];
-        checkSunkSquares(p1CarrierSunk, p1Carrier.arr,leftGrid, leftGridCarrierArr, flatLeftGrid );
-        checkSunkSquares(p1BattleshipSunk, p1Battleship.arr,leftGrid, leftGridBattleshipArr, flatLeftGrid);
-        checkSunkSquares(p1DestroyerSunk, p1Destroyer.arr,leftGrid, leftGridDestroyerArr, flatLeftGrid);
-        checkSunkSquares(p1SubmarineSunk, p1Submarine.arr,leftGrid, leftGridSubmarineArr, flatLeftGrid);
-        checkSunkSquares(p1PatrolBoatSunk, p1PatrolBoat.arr,leftGrid, leftGridPatrolBoatArr, flatLeftGrid);
-};
-
-const p2ShipSunk = () => {
-        let rightGridCarrierArr = [];
-        let rightGridBattleshipArr = [];
-        let rightGridDestroyerArr = [];
-        let rightGridSubmarineArr = [];
-        let rightGridPatrolBoatArr = [];
-        checkSunkSquares(p2CarrierSunk, p2Carrier.arr, rightGrid, rightGridCarrierArr, flatRightGrid);
-        checkSunkSquares(p2BattleshipSunk, p2Battleship.arr, rightGrid, rightGridBattleshipArr, flatRightGrid);
-        checkSunkSquares(p2DestroyerSunk, p2Destroyer.arr, rightGrid, rightGridDestroyerArr, flatRightGrid);
-        checkSunkSquares(p2SubmarineSunk, p2Submarine.arr, rightGrid, rightGridSubmarineArr, flatRightGrid);
-        checkSunkSquares(p2PatrolBoatSunk, p2PatrolBoat.arr, rightGrid, rightGridPatrolBoatArr, flatRightGrid);
-};
 
 //  wreck = document.createElement('img');
 //                  wreck.src = "./assets/shipwreck.png";
