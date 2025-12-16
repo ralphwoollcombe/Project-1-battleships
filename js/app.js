@@ -120,6 +120,9 @@ let leftCellEls = [];
 let rightCellEls = [];
 let leftShipEls = [];
 let rightShipEls = [];
+let flatLeftGrid;
+let flatRightGrid; 
+
 
 /*-------------------------------- Functions --------------------------------*/
 
@@ -133,7 +136,7 @@ class Ship {
 //the array constructor, if taking one argument takes the length of the array. 
 //Andrew Burgess video super helpful. https://www.youtube.com/watch?v=cGZD_0RODh4
 this.matrix = new Array(size).fill(1);
-this.arr = [arr];
+this.arr = arr;
     this.horizontal = true;
     this.sunk = false;
     this.hits = 0;
@@ -196,13 +199,16 @@ const updateLeftBoard = () => {
         //cycle through the left grid 2D array and if any elements have a value of 1 add the class of ship to the corresponding div cell          
                 if (leftGrid[row][col] === 1) {
                         cellEl.classList.add('ship');
+                        flatLeftGrid[index] = 1;
                     } else if (leftGrid[row][col] === 2) {
                         cellEl.classList.add('ship');
                         cellEl.textContent = 'X';
+                        flatLeftGrid[index] = 2;
                         //this signifies a hit
                     } else if  (leftGrid[row][col] === 3) {
                         cellEl.classList.add('not-ship');
                         cellEl.textContent = 'X';
+                        flatLeftGrid[index] = 3;
                         //This signifies a miss 
                     } else {
                         cellEl.classList.add('not-ship');
@@ -219,12 +225,15 @@ const updateRightBoard = () => {
         const cellEl = rightCellEls[index];
                     if (rightGrid[row][col] === 1) {
                         cellEl.classList.add('ship');
+                        flatRightGrid[index] = 1;
                     } else if (rightGrid[row][col] === 2) {
                         cellEl.classList.add('ship');
                         cellEl.textContent = 'X';
+                        flatRightGrid[index] = 2;
                     } else if  (rightGrid[row][col] === 3) {
                         cellEl.classList.add('not-ship');
                         cellEl.textContent = 'X';
+                        flatRightGrid[index] = 3;
                     } else {
                         cellEl.classList.add('not-ship');
                     };
@@ -332,6 +341,8 @@ const init = () => {
         winner = false;
         leftCellEls = document.querySelectorAll('#left-grid div');
         rightCellEls = document.querySelectorAll('#right-grid div');
+        flatLeftGrid = leftGrid.flat();
+        flatRightGrid = rightGrid.flat();
         render()
         rightShipEls = document.querySelectorAll('.right-cell.ship');
          rightShipEls.forEach(cell => {
@@ -377,30 +388,35 @@ p2ButtonElement.addEventListener('click', (event) => {
 
 //P1 ships sunk
 const p1ShipSunk = () => {
-        // for (let row=0; row<width; row++) {
+        let leftGridCarrierArr = [];
+ // for (let row=0; row<width; row++) {
         //         for (let col=0; col<height; col++) {
         //                 const index = (row * 10) + col;
         //                         console.log(leftCellEls[32].textContent)
                                 // console.log(p1Carrier.arr[0][1])
                                 // console.log(leftCellEls[index])
-                                // p1Carrier.forEach((cell, index) => {
-                                let flatLeftGrid = leftGrid.flat()
-                                if ((flatLeftGrid[p1Carrier.arr[0][0]] === 2) &&
-                                (flatLeftGrid[p1Carrier.arr[0][1]] === 2) &&
-                                (flatLeftGrid[p1Carrier.arr[0][2]] === 2) &&      
-                                (flatLeftGrid[p1Carrier.arr[0][3]] === 2) &&
-                                (flatLeftGrid[p1Carrier.arr[0][3]] === 2))
+                                p1Carrier.arr.forEach((cell, index) => {
+                                leftGridCarrierArr.push(flatLeftGrid[cell]);
+                                console.log(leftGridCarrierArr);
+                                if (leftGridCarrierArr.every((cell) => {
+                                        return cell === 2;})) 
+                                        {console.log('P1 carrier ship sunk!')
+                                };
+                //The below code also works:
+                                // if ((flatLeftGrid[p1Carrier.arr[0]] === 2) &&
+                                // (flatLeftGrid[p1Carrier.arr[1]] === 2) &&
+                                // (flatLeftGrid[p1Carrier.arr[2]] === 2) &&      
+                                // (flatLeftGrid[p1Carrier.arr[3]] === 2) &&
+                                // (flatLeftGrid[p1Carrier.arr[3]] === 2))
+                //the below code doesnt work:
                                 // if ((p1Carrier.arr[0][0] === index && leftCellEls[index].textContent === 'X') &&
                                 // (p1Carrier.arr[0][1] === index && leftCellEls[index].textContent === 'X') &&
                                 // (p1Carrier.arr[0][2] === index && leftCellEls[index].textContent === 'X') &&      
                                 // (p1Carrier.arr[0][3] === index && leftCellEls[index].textContent === 'X') &&
                                 // (p1Carrier.arr[0][4] === index && leftCellEls[index].textContent === 'X')) 
-                                {
-                                        console.log('P1 carrier ship sunk!')
-                                };
-                                // });
-                };
-//          };
+                                 
+                });
+         };
 // };
 //1.map leftGrid so that it is a single array 
 
