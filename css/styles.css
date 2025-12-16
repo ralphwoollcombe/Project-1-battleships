@@ -86,3 +86,8 @@ body {
 .hidden {
     display: none;
 }
+
+img {
+    position: center;
+    width: 25px;
+}

@@ -223,6 +223,13 @@ const updateLeftBoard = () => {
                         cellEl.textContent = 'X';
                         flatLeftGrid[index] = 3;
                         //This signifies a miss 
+                    } else if (leftGrid[row][col] === 4) {
+                       cellEl.classList.add('ship');
+                       cellEl.textContent = ''; 
+                        flatLeftGrid[index] = 4;
+                        let wreck = document.createElement('img');
+                        wreck.src = "./assets/shipwreck.png";
+                        cellEl.appendChild(wreck); 
                     } else {
                         cellEl.classList.add('not-ship');
                     };
@@ -247,6 +254,13 @@ const updateRightBoard = () => {
                         cellEl.classList.add('not-ship');
                         cellEl.textContent = 'X';
                         flatRightGrid[index] = 3;
+                    } else if (rightGrid[row][col] === 4) {
+                       cellEl.classList.add('ship');
+                       cellEl.textContent = ''; 
+                       flatRightGrid[index] = 4;
+                        let wreck = document.createElement('img');
+                        wreck.src = "./assets/shipwreck.png";
+                        cellEl.appendChild(wreck); 
                     } else {
                         cellEl.classList.add('not-ship');
                     };
@@ -415,35 +429,67 @@ const p1ShipSunk = () => {
                         p1CarrierSunk = leftGridCarrierArr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                if (p1CarrierSunk) {console.log('p1 Carrier sunk')}
+                if (p1CarrierSunk) {
+                p1Carrier.arr.forEach((cell) => {
+                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                leftGrid[firstDigit][secondDigit] = 4;
+                render();
+                });
+                        console.log('p1 Carrier sunk')}
                 p1Battleship.arr.forEach((cell, index) => {
                         leftGridBattleshipArr.push(flatLeftGrid[cell]);
                         p1BattleshipSunk = leftGridBattleshipArr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                if (p1BattleshipSunk) {console.log('Battleship sunk')}
+                if (p1BattleshipSunk) {
+                p1Battleship.arr.forEach((cell) => {
+                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                leftGrid[firstDigit][secondDigit] = 4;
+                render();
+                });
+                        console.log('p1 Battleship sunk')}
                  p1Destroyer.arr.forEach((cell, index) => {
                         leftGridDestroyerArr.push(flatLeftGrid[cell]);
                         p1DestroyerSunk = leftGridDestroyerArr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                console.log(p1DestroyerSunk);
-                if (p1DestroyerSunk) {console.log('Destroyer sunk')}
+                if (p1DestroyerSunk) {
+                p1Destroyer.arr.forEach((cell) => {
+                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                leftGrid[firstDigit][secondDigit] = 4;
+                render();
+                });
+                        console.log('p1 Destroyer sunk')}
                  p1Submarine.arr.forEach((cell, index) => {
                         leftGridSubmarineArr.push(flatLeftGrid[cell]);
                         p1SubmarineSunk = leftGridSubmarineArr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                console.log(p1SubmarineSunk);
-                if (p1SubmarineSunk) {console.log('Submarine sunk')}
+                if (p1SubmarineSunk) {
+                p1Submarine.arr.forEach((cell) => {
+                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                leftGrid[firstDigit][secondDigit] = 4;
+                render();
+                });
+                        console.log('p1 Submarine sunk')}
                  p1PatrolBoat.arr.forEach((cell, index) => {
                         leftGridPatrolBoatArr.push(flatLeftGrid[cell]);
                                 // console.log(leftGridCarrierArr);
                         p1PatrolBoatSunk = leftGridPatrolBoatArr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                console.log(p1PatrolBoatSunk);
-                if (p1PatrolBoatSunk) {console.log('PatrolBoat sunk')}
+                if (p1PatrolBoatSunk) {
+                p1PatrolBoat.arr.forEach((cell) => {
+                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                leftGrid[firstDigit][secondDigit] = 4;
+                render();
+                });
+                        console.log('p1 Patrol Boat sunk')}
 };
 
 const p2ShipSunk = () => {
@@ -457,33 +503,70 @@ const p2ShipSunk = () => {
                         p2CarrierSunk = rightGridCarrierArr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                if (p2CarrierSunk) {console.log('p2 Carrier sunk')}
+                if (p2CarrierSunk) {
+                p2Carrier.arr.forEach((cell) => {
+                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                rightGrid[firstDigit][secondDigit] = 4;
+                render();
+                });
+                        console.log('p2 Carrier sunk')}
                 p2Battleship.arr.forEach((cell, index) => {
                         rightGridBattleshipArr.push(flatRightGrid[cell]);
                         p2BattleshipSunk = rightGridBattleshipArr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                if (p2BattleshipSunk) {console.log('P2 Battleship sunk')}
+                if (p2BattleshipSunk) {
+                p2Battleship.arr.forEach((cell) => {
+                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                rightGrid[firstDigit][secondDigit] = 4;
+                render();
+                });
+                        console.log('p2 Battleship sunk')}
                  p2Destroyer.arr.forEach((cell, index) => {
                         rightGridDestroyerArr.push(flatRightGrid[cell]);
                         p2DestroyerSunk = rightGridDestroyerArr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                console.log(p2DestroyerSunk);
-                if (p2DestroyerSunk) {console.log('P2 Destroyer sunk')}
+                if (p2DestroyerSunk) {
+                p2Destroyer.arr.forEach((cell) => {
+                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                rightGrid[firstDigit][secondDigit] = 4;
+                render();
+                });
+                        console.log('p2 Destroyer sunk')}
                  p2Submarine.arr.forEach((cell, index) => {
                         rightGridSubmarineArr.push(flatRightGrid[cell]);
                         p2SubmarineSunk = rightGridSubmarineArr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                console.log(p2SubmarineSunk);
-                if (p2SubmarineSunk) {console.log('P2 Submarine sunk')}
+                if (p2SubmarineSunk) {
+                p2Submarine.arr.forEach((cell) => {
+                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                rightGrid[firstDigit][secondDigit] = 4;
+                render();
+                });
+                        console.log('p2 Submarine sunk')}
                  p2PatrolBoat.arr.forEach((cell, index) => {
                         rightGridPatrolBoatArr.push(flatRightGrid[cell]);
                                 // console.log(leftGridCarrierArr);
                         p2PatrolBoatSunk = rightGridPatrolBoatArr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                console.log(p2PatrolBoatSunk);
-                if (p2PatrolBoatSunk) {console.log('P2 Patrol Boat sunk')}
+                if (p2PatrolBoatSunk) {
+                p2PatrolBoat.arr.forEach((cell) => {
+                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                rightGrid[firstDigit][secondDigit] = 4;
+                console.log(firstDigit)
+                render();
+                });
+                        console.log('p2 Patrol Boat sunk')}
 };
+
+//  wreck = document.createElement('img');
+//                  wreck.src = "./assets/shipwreck.png";
+//                 .appendChild(wreck);  
