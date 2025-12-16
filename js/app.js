@@ -100,7 +100,7 @@ let leftGrid;
 let rightGrid;
 let turn;
 let winner;
-let boatSunk;
+
 
 //P1 variables:
 let p1Hits;
@@ -226,7 +226,7 @@ const updateLeftBoard = () => {
                         //This signifies a miss 
                     } else if (leftGrid[row][col] === 4) {
                        cellEl.classList.add('ship');
-                       cellEl.textContent = ''; 
+                       cellEl.textContent = 'X'; 
                         flatLeftGrid[index] = 4;
                         let wreck = document.createElement('img');
                         wreck.src = "./assets/shipwreck.png";
@@ -418,24 +418,24 @@ p2ButtonElement.addEventListener('click', (event) => {
 })
 /*------------------------------- Page Load ------------------------------*/
 //SHIP SUNK FUNCTIONS:
-const ifSunk = (boatarr) => {
-        if (boatSunk) {
-                boatarr.forEach((cell) => {
-                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
-                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
-                leftGrid[firstDigit][secondDigit] = 4;
-                render();
-                });
-        };
-};
-
-const checkSunkSquares = (boatarr, leftgridarr) => {
+const checkSunkSquares = (boatsunk, boatarr, grid, gridarr, flatgrid) => {
          boatarr.forEach((cell, index) => {
-                        leftgridarr.push(flatLeftGrid[cell]);
-                        boatSunk = leftgridarr.every((cell) => {
+                        gridarr.push(flatgrid[cell]);
+                        boatsunk = gridarr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                ifSunk(p1Carrier.arr);
+                const ifSunk = (boatsunk, boatarr, grid) => {
+                if (boatsunk) {
+                boatarr.forEach((cell) => {
+//THIS IS BUGGY AND I NEED A NEW WAY OF DOING IT!!
+                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
+                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                grid[firstDigit][secondDigit] = 4;
+                });
+                render();
+        };
+};
+ifSunk(boatsunk, boatarr, grid);
 };
 //P1 ships sunk
 const p1ShipSunk = () => {
@@ -444,42 +444,11 @@ const p1ShipSunk = () => {
         let leftGridDestroyerArr = [];
         let leftGridSubmarineArr = [];
         let leftGridPatrolBoatArr = [];
-        checkSunkSquares(p1Carrier.arr,leftGridCarrierArr);
-        checkSunkSquares(p1Battleship.arr,leftGridBattleshipArr);
-        checkSunkSquares(p1Destroyer.arr,leftGridDestroyerArr);
-        checkSunkSquares(p1Submarine.arr,leftGridSubmarineArr);
-        checkSunkSquares(p1PatrolBoat.arr,leftGridPatrolBoatArr);
-                //  p1Carrier.arr.forEach((cell, index) => {
-                //         leftGridCarrierArr.push(flatLeftGrid[cell]);
-                //         p1CarrierSunk = leftGridCarrierArr.every((cell) => {
-                //                 return cell === 2;})                          
-                // });
-                // ifSunk(p1CarrierSunk, p1Carrier.arr);
-                // p1Battleship.arr.forEach((cell, index) => {
-                //         leftGridBattleshipArr.push(flatLeftGrid[cell]);
-                //         p1BattleshipSunk = leftGridBattleshipArr.every((cell) => {
-                //                 return cell === 2;})                          
-                // });
-                // ifSunk(p1BattleshipSunk, p1Battleship.arr);
-                //  p1Destroyer.arr.forEach((cell, index) => {
-                //         leftGridDestroyerArr.push(flatLeftGrid[cell]);
-                //         p1DestroyerSunk = leftGridDestroyerArr.every((cell) => {
-                //                 return cell === 2;})                          
-                // });
-                // ifSunk(p1DestroyerSunk, p1Destroyer.arr);
-                //  p1Submarine.arr.forEach((cell, index) => {
-                //         leftGridSubmarineArr.push(flatLeftGrid[cell]);
-                //         p1SubmarineSunk = leftGridSubmarineArr.every((cell) => {
-                //                 return cell === 2;})                          
-                // });
-                // ifSunk(p1SubmarineSunk, p1Submarine.arr);
-                //  p1PatrolBoat.arr.forEach((cell, index) => {
-                //         leftGridPatrolBoatArr.push(flatLeftGrid[cell]);
-                //                 // console.log(leftGridCarrierArr);
-                //         p1PatrolBoatSunk = leftGridPatrolBoatArr.every((cell) => {
-                //                 return cell === 2;})                          
-                // });
-                // ifSunk(p1PatrolBoatSunk, p1PatrolBoat.arr);
+        checkSunkSquares(p1CarrierSunk, p1Carrier.arr,leftGrid, leftGridCarrierArr, flatLeftGrid );
+        checkSunkSquares(p1BattleshipSunk, p1Battleship.arr,leftGrid, leftGridBattleshipArr, flatLeftGrid);
+        checkSunkSquares(p1DestroyerSunk, p1Destroyer.arr,leftGrid, leftGridDestroyerArr, flatLeftGrid);
+        checkSunkSquares(p1SubmarineSunk, p1Submarine.arr,leftGrid, leftGridSubmarineArr, flatLeftGrid);
+        checkSunkSquares(p1PatrolBoatSunk, p1PatrolBoat.arr,leftGrid, leftGridPatrolBoatArr, flatLeftGrid);
 };
 
 const p2ShipSunk = () => {
@@ -488,42 +457,11 @@ const p2ShipSunk = () => {
         let rightGridDestroyerArr = [];
         let rightGridSubmarineArr = [];
         let rightGridPatrolBoatArr = [];
-        checkSunkSquares(p2Carrier.arr,rightGridCarrierArr);
-        checkSunkSquares(p2Battleship.arr,rightGridBattleshipArr);
-        checkSunkSquares(p2Destroyer.arr,rightGridDestroyerArr);
-        checkSunkSquares(p2Submarine.arr,rightGridSubmarineArr);
-        checkSunkSquares(p2PatrolBoat.arr,rightGridPatrolBoatArr);
-                // p2Carrier.arr.forEach((cell, index) => {
-                //         rightGridCarrierArr.push(flatRightGrid[cell]);
-                //         p2CarrierSunk = rightGridCarrierArr.every((cell) => {
-                //                 return cell === 2;})                          
-                // });
-                // ifSunk(p2CarrierSunk, p2Carrier.arr);
-                // p2Battleship.arr.forEach((cell, index) => {
-                //         rightGridBattleshipArr.push(flatRightGrid[cell]);
-                //         p2BattleshipSunk = rightGridBattleshipArr.every((cell) => {
-                //                 return cell === 2;})                          
-                // });
-                // ifSunk(p2BattleshipSunk, p2Battleship.arr);
-                //  p2Destroyer.arr.forEach((cell, index) => {
-                //         rightGridDestroyerArr.push(flatRightGrid[cell]);
-                //         p2DestroyerSunk = rightGridDestroyerArr.every((cell) => {
-                //                 return cell === 2;})                          
-                // });
-                // ifSunk(p2DestroyerSunk, p2Destroyer.arr);
-                //  p2Submarine.arr.forEach((cell, index) => {
-                //         rightGridSubmarineArr.push(flatRightGrid[cell]);
-                //         p2SubmarineSunk = rightGridSubmarineArr.every((cell) => {
-                //                 return cell === 2;})                          
-                // });
-                // ifSunk(p2SubmarineSunk, p2Submarine.arr);
-                //  p2PatrolBoat.arr.forEach((cell, index) => {
-                //         rightGridPatrolBoatArr.push(flatRightGrid[cell]);
-                //                 // console.log(leftGridCarrierArr);
-                //         p2PatrolBoatSunk = rightGridPatrolBoatArr.every((cell) => {
-                //                 return cell === 2;})                          
-                // });
-                // ifSunk(p2PatrolBoatSunk, p2PatrolBoat.arr);
+        checkSunkSquares(p2CarrierSunk, p2Carrier.arr, rightGrid, rightGridCarrierArr, flatRightGrid);
+        checkSunkSquares(p2BattleshipSunk, p2Battleship.arr, rightGrid, rightGridBattleshipArr, flatRightGrid);
+        checkSunkSquares(p2DestroyerSunk, p2Destroyer.arr, rightGrid, rightGridDestroyerArr, flatRightGrid);
+        checkSunkSquares(p2SubmarineSunk, p2Submarine.arr, rightGrid, rightGridSubmarineArr, flatRightGrid);
+        checkSunkSquares(p2PatrolBoatSunk, p2PatrolBoat.arr, rightGrid, rightGridPatrolBoatArr, flatRightGrid);
 };
 
 //  wreck = document.createElement('img');
