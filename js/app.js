@@ -127,12 +127,13 @@ let rightShipEls = [];
 // - name, size (in cells), as an array (for later refactors), whether sunk and how many hits.
 //need to be capitalised.
 class Ship {
-        constructor(name, size) {
+        constructor(name, size, arr) {
     this.name = name;
     this.size = size;
 //the array constructor, if taking one argument takes the length of the array. 
 //Andrew Burgess video super helpful. https://www.youtube.com/watch?v=cGZD_0RODh4
-    this.arr = new Array(size).fill(1);
+this.matrix = new Array(size).fill(1);
+this.arr = [arr];
     this.horizontal = true;
     this.sunk = false;
     this.hits = 0;
@@ -143,13 +144,17 @@ class Ship {
   };
 };
 //5 types of ship that each player gets:
-const carrier = new Ship('Carrier', 5);
-const battleship= new Ship('Battleship', 4);
-const destroyer = new Ship('Destroyer', 3);
-const submarine = new Ship('Submarine', 3);
-const patrolBoat = new Ship('Patrol Boat', 2);
+const p1Carrier = new Ship('Carrier', 5, [32,42,52,62,72]);
+const p1Battleship= new Ship('Battleship', 4, [49,59,69,79]);
+const p1Destroyer = new Ship('Destroyer', 3, [47,57,67]);
+const p1Submarine = new Ship('Submarine', 3, [93,94,95]);
+const p1PatrolBoat = new Ship('Patrol Boat', 2, [34,35]);
 
-// console.log(carrier);
+const p2Carrier = new Ship('Carrier', 5, [55,56,57,58,59]);
+const p2Battleship= new Ship('Battleship', 4, [70,71,72,73]);
+const p2Destroyer = new Ship('Destroyer', 3, [30,40,50]);
+const p2Submarine = new Ship('Submarine', 3, [77,87,97]);
+const p2PatrolBoat = new Ship('Patrol Boat', 2, [1,11]);
 
 //Used to create both the left and the right grid in the game.
 const createGrid = () => {
@@ -174,7 +179,6 @@ const createGrid = () => {
                 };
         };
 };
-
 
 const updateBoard = () => {
         updateLeftBoard();
@@ -245,29 +249,24 @@ const switchPlayer = () => {
         };
 };
 
-//P1 clicks on a space on the P2 board.
-//P1 left grid board gets hidden. 
-//turn now equals ''.
-//P2 button appears on the screen on top of the P2 board
-//P1 listeners return nothing if clicked.
-//P2 button clicked and switchs turn to P2.
-//P2 grid now shown to P2
-
 
 // const updateMessage = () => {};
 
 const handleLeftClick = (event) => {
         cellRow = event.target.id[1];
         cellCol = event.target.id[2];
-        console.log(turn)
      if (turn === 'p1') {return}
      else if (turn === 'p2') {
      if (leftGrid[cellRow][cellCol] === 0) {
         leftGrid[cellRow][cellCol] = 3;
-       switchPlayer();
+        render()
+        switchPlayer();
+        p1ShipSunk();
      } else if (leftGrid[cellRow][cellCol] === 1) {
         leftGrid[cellRow][cellCol] = 2;
+        render();
         switchPlayer();
+        p1ShipSunk();
      } else {return};
 };
 };
@@ -275,17 +274,21 @@ const handleLeftClick = (event) => {
 const handleRightClick = (event) => {
         cellRow = event.target.id[1];
         cellCol = event.target.id[2];
-        console.log(turn)
+        console.log(event.target.id)
      if (turn === 'p2') {return}
      else if (turn === 'p1') {
      if (rightGrid[cellRow][cellCol] === 0) {
         rightGrid[cellRow][cellCol] = 3;
+        render();
         switchPlayer();
+        p1ShipSunk();
         console.log(leftGrid);
 console.log(rightGrid);
      } else if (rightGrid[cellRow][cellCol] === 1) {
         rightGrid[cellRow][cellCol] = 2;
+        render();
         switchPlayer();
+        p1ShipSunk();
      } else {return};
 };
 };
@@ -371,3 +374,45 @@ p2ButtonElement.addEventListener('click', (event) => {
 }
 })
 /*------------------------------- Page Load ------------------------------*/
+
+//P1 ships sunk
+const p1ShipSunk = () => {
+        // for (let row=0; row<width; row++) {
+        //         for (let col=0; col<height; col++) {
+        //                 const index = (row * 10) + col;
+        //                         console.log(leftCellEls[32].textContent)
+                                // console.log(p1Carrier.arr[0][1])
+                                // console.log(leftCellEls[index])
+                                // p1Carrier.forEach((cell, index) => {
+                                let flatLeftGrid = leftGrid.flat()
+                                if ((flatLeftGrid[p1Carrier.arr[0][0]] === 2) &&
+                                (flatLeftGrid[p1Carrier.arr[0][1]] === 2) &&
+                                (flatLeftGrid[p1Carrier.arr[0][2]] === 2) &&      
+                                (flatLeftGrid[p1Carrier.arr[0][3]] === 2) &&
+                                (flatLeftGrid[p1Carrier.arr[0][3]] === 2))
+                                // if ((p1Carrier.arr[0][0] === index && leftCellEls[index].textContent === 'X') &&
+                                // (p1Carrier.arr[0][1] === index && leftCellEls[index].textContent === 'X') &&
+                                // (p1Carrier.arr[0][2] === index && leftCellEls[index].textContent === 'X') &&      
+                                // (p1Carrier.arr[0][3] === index && leftCellEls[index].textContent === 'X') &&
+                                // (p1Carrier.arr[0][4] === index && leftCellEls[index].textContent === 'X')) 
+                                {
+                                        console.log('P1 carrier ship sunk!')
+                                };
+                                // });
+                };
+//          };
+// };
+//1.map leftGrid so that it is a single array 
+
+//2.
+                                
+
+                         p1Carrier.forEach
+                        // let p1CarrierIndex1 = p1Carrier.arr[0]
+                        // let p1carrierSunk = p1Carrier.arr.forEach(i => {})
+                        // if (leftGrid[])
+                        
+                        // p1Carrier.arr[1]      
+               
+//if each spot on the left grid with the index of ID p1Carrier.arr
+//[32,42,52,62,72] needs to match leftGrid[32] === 1, leftGrid[42]
