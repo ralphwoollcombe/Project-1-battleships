@@ -149,20 +149,35 @@ let flatRightGrid;
 //need to be capitalised.
 class Ship {
         constructor(name, size, arr) {
-    this.name = name;
-    this.size = size;
+        this.name = name;
+        this.size = size;
 //the array constructor, if taking one argument takes the length of the array. 
 //Andrew Burgess video super helpful. https://www.youtube.com/watch?v=cGZD_0RODh4
-this.matrix = new Array(size).fill(1);
-this.arr = arr;
-    this.horizontal = true;
-    this.sunk = false;
-    this.hits = 0;
-  };
+        this.arr = arr;
+        this.horizontal = true;
+        this.sunk = false;
+        this.hits = 0;
+        };
 
-  makeVertical () {
+        makeVertical() {
         this.horizontal = false;
-  };
+        };
+
+        matrix (size) {
+        if (this.horizontal) {
+                let matrix2d = [];
+                for (let row=0; row<size; row++) {
+                      matrix2d.push(new Array(size).fill(0));
+                };
+                let midRow = Math.floor(size/2)
+                        for (let col=0; col<size; col++) {
+                                matrix2d[midRow][col] = 1;
+                        };
+                        return matrix2d;
+                } else {
+                                               
+                };
+        };
 };
 //5 types of ship that each player gets:
 const p1Carrier = new Ship('Carrier', 5, [32,42,52,62,72]);
@@ -177,6 +192,7 @@ const p2Destroyer = new Ship('Destroyer', 3, [30,40,50]);
 const p2Submarine = new Ship('Submarine', 3, [77,87,97]);
 const p2PatrolBoat = new Ship('Patrol Boat', 2, [1,11]);
 
+// console.log(p2PatrolBoat.matrix(5));
 //Used to create both the left and the right grid in the game.
 const createGrid = () => {
         for (let row=0; row< height; row++) {
@@ -626,8 +642,8 @@ startButtonElement.addEventListener('click', (event) => {
 
 /*------------------------------- Page Load ------------------------------*/
 
-//TO DO WEDNESDAY: 
-//1. Make the start a reset buttons functional
-//2. Add messages to the entire line of code for each situation.
-//3. Refactor so that both P1 and P2 can place their ships OR computer randomly generates ships
-//4. 
+//REFACTORING computer generated positioning:
+//1. Make it so each piece has a horizontal and a vertical matrix - needs to be surrounded by 5s
+//2. At the start of the game the grid needs to be a 2D array of 0s.
+//3. need a function which randomly places each ship based on its matrix starting with top left corner. 
+        //conditionals needed for able to be positioned
