@@ -694,6 +694,73 @@ const randomShipBoards = () => {
         const maxAttempts = 10000;
         let correctPlacementMaxAttempts = 0;
         const placeShip = (ship, size, grid) => {
+                let orientation = Math.floor(Math.random() * 2);
+                if (orientation === 0) {
+                let correctPlacement = false;
+                // console.log(correctPlacement);
+                while (correctPlacement === false && correctPlacementMaxAttempts < maxAttempts) {
+                        const generateNumber = () => {
+                                index = Math.floor(Math.random() * 100);
+                                console.log('index is', index)
+                                const testing = index.toString().split('')
+                                if (testing.length === 1) {
+                                        rowIndex = 0;
+                                        colIndex = parseInt(testing[0]);
+                                } else {
+                                        rowIndex = parseInt(testing[0]);
+                                        colIndex = parseInt(testing[1]);
+                                };   
+                        };
+                        generateNumber()
+                        while ((rowIndex > width - size)) {
+                                generateNumber();
+                        };
+                        console.log('col index', colIndex);
+                        console.log('row index', rowIndex);
+                        const checkPlacement = (ship, size, grid) => {
+                                let placementCount = 0;
+                                let theRowIndex = rowIndex;
+                                for (let cell=0; cell<size; cell++) {
+                                let gridCell = grid[theRowIndex][colIndex];
+                                        if (gridCell !== 0) {
+                                                placementCount = 0;
+                                                return
+                                        } else {
+                                                placementCount++;
+                                                theRowIndex++;
+                                                if (placementCount === size) {
+                                                correctPlacement = true;
+                                                // console.log('correct palce', correctPlacement)
+                                                };
+                                        };
+                                        
+                                };
+                        };
+                        checkPlacement(ship, size, grid);
+                        correctPlacementMaxAttempts++;
+                                        const placePiece = (ship, size, grid) => {
+                                        if (correctPlacement) {
+                                                for (let cell=0; cell<size; cell++) {
+                                                grid[rowIndex][colIndex] = 1;
+                                                ship.arr[cell] = index;
+                                                rowIndex++;
+                                                index++;
+                                                piecesPlaced++;
+                                                // console.log('the col index is', colIndex);
+                                                };
+                                        };
+                                };
+                        placePiece(ship, size, grid);
+                };
+                // console.log('max attempts', correctPlacementMaxAttempts)
+               
+        
+
+
+
+
+
+                } else {
                 let correctPlacement = false;
                 // console.log(correctPlacement);
                 while (correctPlacement === false && correctPlacementMaxAttempts < maxAttempts) {
@@ -754,12 +821,10 @@ const randomShipBoards = () => {
                
         
         };
-        p1Ships.forEach(ship => placeShip(ship, ship.size, leftGrid))
-        p2Ships.forEach(ship => placeShip(ship, ship.size, rightGrid))
+};
+p1Ships.forEach(ship => placeShip(ship, ship.size, leftGrid))
+p2Ships.forEach(ship => placeShip(ship, ship.size, rightGrid))
         // console.log('here we', piecesPlaced)
 };
 
-//  let orientation = Math.floor(Math.random()*2);
-
-//         if (orientation === 0) {
-//                 }; 
+// 
