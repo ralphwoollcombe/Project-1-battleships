@@ -422,8 +422,18 @@ const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, gridar
                         if (boatsunk) {
                                 boatarr.forEach((cell) => {
 //THIS IS BUGGY AND I NEED A NEW WAY OF DOING IT!!
-                                let firstDigit = (parseInt(((cell + 10).toString()).charAt(0)))-1
-                                let secondDigit = parseInt(((cell + 10).toString()).charAt(1))
+                                let firstDigit;
+                                let secondDigit;
+                                const testing = cell.toString(10).split('')
+                                // cell is 1 = ['1']
+                                // cell is 11 - ['1', '1']
+                                        if (testing.length === 1) {
+                                                firstDigit = 0;
+                                                 secondDigit = testing[0];
+                                        } else {
+                                                firstDigit = testing[0];
+                                                secondDigit = testing[1];
+                                         };
                                 grid[firstDigit][secondDigit] = 4;
                                 });
                         console.log(`${boat} sunk!`);
@@ -516,28 +526,43 @@ console.log(p1ButtonElement)
 // rightCellEls.forEach(cell => {cell.addEventListener('click', handleRightClick)
 // });
 
+//Event listener for the left grid squares
 leftCellEls.forEach(cell => {cell.addEventListener('click', handleLeftClick)
 });
+
+//event listener for the right grid squares
  rightCellEls.forEach(cell => {cell.addEventListener('click', handleRightClick)
 });
+
+//Event listener for the P1 button of the game:
 p1ButtonElement.addEventListener('click', (event) => {
         if (turn) {return
         } else {leftShipEls.forEach(cell => {
         cell.classList.remove('covered-board')})
         p1ButtonElement.classList.add('hidden');
         turn = 'p1';
-}
-})
+        };
+});
+
+//Event listener for the P2 button of the game:
 p2ButtonElement.addEventListener('click', (event) => {
         if (turn) {return
         } else {rightShipEls.forEach(cell => {
         cell.classList.remove('covered-board')})
         p2ButtonElement.classList.add('hidden');
         turn = 'p2';
-}
-})
+        };
+});
+
+//Event listener for the start button of the game:
+startButtonElement.addEventListener('click', (event) => {
+
+});
+
 /*------------------------------- Page Load ------------------------------*/
 
-//  wreck = document.createElement('img');
-//                  wreck.src = "./assets/shipwreck.png";
-//                 .appendChild(wreck);  
+//TO DO WEDNESDAY: 
+//1. Make the start a reset buttons functional
+//2. Add messages to the entire line of code for each situation.
+//3. Refactor so that both P1 and P2 can place their ships OR computer randomly generates ships
+//4. 
