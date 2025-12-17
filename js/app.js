@@ -148,12 +148,12 @@ let flatRightGrid;
 // - name, size (in cells), as an array (for later refactors), whether sunk and how many hits.
 //need to be capitalised.
 class Ship {
-        constructor(name, size, arr) {
+        constructor(name, size) {
         this.name = name;
         this.size = size;
 //the array constructor, if taking one argument takes the length of the array. 
 //Andrew Burgess video super helpful. https://www.youtube.com/watch?v=cGZD_0RODh4
-        this.arr = arr;
+        this.arr = new Array(size).fill(0);
         this.horizontal = true;
         this.sunk = false;
         this.hits = 0;
@@ -162,37 +162,50 @@ class Ship {
         makeVertical() {
         this.horizontal = false;
         };
+};      
+        // matrix (size) {
+        // if (this.horizontal) {
+                // return new Array(size).fill(1);
+                // } 
+                // else {
+                // let matrix2d = [];
+                // for (let row=0; row<size; row++) {
+                //     matrix2d.push(new Array(size).fill(0));
+                //         };    
+                // midCol = Math.floor(size/2);
 
-        matrix (size) {
-        if (this.horizontal) {
-                let matrix2d = [];
-                for (let row=0; row<size; row++) {
-                      matrix2d.push(new Array(size).fill(0));
-                };
-                let midRow = Math.floor(size/2)
-                        for (let col=0; col<size; col++) {
-                                matrix2d[midRow][col] = 1;
-                        };
-                        return matrix2d;
-                } else {
-                                               
-                };
-        };
-};
+                // };
+        
+
 //5 types of ship that each player gets:
-const p1Carrier = new Ship('Carrier', 5, [32,42,52,62,72]);
-const p1Battleship= new Ship('Battleship', 4, [49,59,69,79]);
-const p1Destroyer = new Ship('Destroyer', 3, [47,57,67]);
-const p1Submarine = new Ship('Submarine', 3, [93,94,95]);
-const p1PatrolBoat = new Ship('Patrol Boat', 2, [34,35]);
+// const p1Carrier = new Ship('Carrier', 5, [32,42,52,62,72]);
+// const p1Battleship= new Ship('Battleship', 4, [49,59,69,79]);
+// const p1Destroyer = new Ship('Destroyer', 3, [47,57,67]);
+// const p1Submarine = new Ship('Submarine', 3, [93,94,95]);
+// const p1PatrolBoat = new Ship('Patrol Boat', 2, [34,35]);
 
-const p2Carrier = new Ship('Carrier', 5, [55,56,57,58,59]);
-const p2Battleship= new Ship('Battleship', 4, [70,71,72,73]);
-const p2Destroyer = new Ship('Destroyer', 3, [30,40,50]);
-const p2Submarine = new Ship('Submarine', 3, [77,87,97]);
-const p2PatrolBoat = new Ship('Patrol Boat', 2, [1,11]);
+// const p2Carrier = new Ship('Carrier', 5, [55,56,57,58,59]);
+// const p2Battleship= new Ship('Battleship', 4, [70,71,72,73]);
+// const p2Destroyer = new Ship('Destroyer', 3, [30,40,50]);
+// const p2Submarine = new Ship('Submarine', 3, [77,87,97]);
+// const p2PatrolBoat = new Ship('Patrol Boat', 2, [1,11]);
 
-// console.log(p2PatrolBoat.matrix(5));
+const p1Carrier = new Ship('Carrier', 5);
+const p1Battleship= new Ship('Battleship', 4);
+const p1Destroyer = new Ship('Destroyer', 3);
+const p1Submarine = new Ship('Submarine', 3);
+const p1PatrolBoat = new Ship('Patrol Boat', 2);
+
+const p2Carrier = new Ship('Carrier', 5);
+const p2Battleship = new Ship('Battleship', 4);
+const p2Destroyer = new Ship('Destroyer', 3);
+const p2Submarine = new Ship('Submarine', 3);
+const p2PatrolBoat = new Ship('Patrol Boat', 2);
+
+const p1Ships = [p1Carrier, p1Battleship, p1Destroyer, p1Submarine, p1PatrolBoat];
+const p2Ships = [p2Carrier, p2Battleship, p2Destroyer, p2Submarine, p2PatrolBoat];
+
+// console.log(p2PatrolBoat.matrix);
 //Used to create both the left and the right grid in the game.
 const createGrid = () => {
         for (let row=0; row< height; row++) {
@@ -458,10 +471,10 @@ const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, gridar
                                 // cell is 11 - ['1', '1']
                                         if (testing.length === 1) {
                                                 firstDigit = 0;
-                                                 secondDigit = testing[0];
+                                                secondDigit = parseInt(testing[0]);
                                         } else {
-                                                firstDigit = testing[0];
-                                                secondDigit = testing[1];
+                                                firstDigit = parseInt(testing[0]);
+                                                secondDigit = parseInt(testing[1]);
                                          };
                                 grid[firstDigit][secondDigit] = 4;
                                 });
@@ -515,23 +528,45 @@ const init = () => {
         leftGrid =     [[0,0,0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0,0,0],
-                        [0,0,1,0,1,1,0,0,0,0],
-                        [0,0,1,0,0,0,0,1,0,1],
-                        [0,0,1,0,0,0,0,1,0,1],
-                        [0,0,1,0,0,0,0,1,0,1],
-                        [0,0,1,0,0,0,0,0,0,1],
                         [0,0,0,0,0,0,0,0,0,0],
-                        [0,0,0,1,1,1,0,0,0,0]]
-        rightGrid =    [[0,1,0,0,0,0,0,0,0,0],
-                        [0,1,0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0,0,0],
-                        [1,0,0,0,0,0,0,0,0,0],
-                        [1,0,0,0,0,0,0,0,0,0],
-                        [1,0,0,0,0,1,1,1,1,1],
                         [0,0,0,0,0,0,0,0,0,0],
-                        [1,1,1,1,0,0,0,1,0,0],
-                        [0,0,0,0,0,0,0,1,0,0],
-                        [0,0,0,0,0,0,0,1,0,0]]
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0]]
+        rightGrid =    [[0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0]]
+        // leftGrid =     [[0,0,0,0,0,0,0,0,0,0],
+        //                 [0,0,0,0,0,0,0,0,0,0],
+        //                 [0,0,0,0,0,0,0,0,0,0],
+        //                 [0,0,1,0,1,1,0,0,0,0],
+        //                 [0,0,1,0,0,0,0,1,0,1],
+        //                 [0,0,1,0,0,0,0,1,0,1],
+        //                 [0,0,1,0,0,0,0,1,0,1],
+        //                 [0,0,1,0,0,0,0,0,0,1],
+        //                 [0,0,0,0,0,0,0,0,0,0],
+        //                 [0,0,0,1,1,1,0,0,0,0]]
+        // rightGrid =    [[0,1,0,0,0,0,0,0,0,0],
+        //                 [0,1,0,0,0,0,0,0,0,0],
+        //                 [0,0,0,0,0,0,0,0,0,0],
+        //                 [1,0,0,0,0,0,0,0,0,0],
+        //                 [1,0,0,0,0,0,0,0,0,0],
+        //                 [1,0,0,0,0,1,1,1,1,1],
+        //                 [0,0,0,0,0,0,0,0,0,0],
+        //                 [1,1,1,1,0,0,0,1,0,0],
+        //                 [0,0,0,0,0,0,0,1,0,0],
+        //                 [0,0,0,0,0,0,0,1,0,0]]
+        randomShipBoards();
+        console.log(leftGrid)
         p1Hits = 0;
         p2Hits = 0;
         p1Shots = 0;
@@ -643,7 +678,88 @@ startButtonElement.addEventListener('click', (event) => {
 /*------------------------------- Page Load ------------------------------*/
 
 //REFACTORING computer generated positioning:
-//1. Make it so each piece has a horizontal and a vertical matrix - needs to be surrounded by 5s
-//2. At the start of the game the grid needs to be a 2D array of 0s.
-//3. need a function which randomly places each ship based on its matrix starting with top left corner. 
-        //conditionals needed for able to be positioned
+//1. We need a function that chooses a random spot on our 2D array to see if it is equal to 0. 
+//2. This needs to loop while count<size to see if all the spots are free (equal to 0).
+//3. If the incremental value of the grid does not exist, need to redo the whole function.
+//4. If all spaces are equal to 0, need to loop round again and change the value of the grid to 1.
+//5. If this is complete need to move onto the next ship and do it again.
+
+
+
+const randomShipBoards = () => {
+        let index = 0;
+        let rowIndex = 10;
+        let colIndex = 10;
+        let piecesPlaced = 0;
+        const maxAttempts = 10000;
+        let correctPlacementMaxAttempts = 0;
+        const placeShip = (ship, size, grid) => {
+                let correctPlacement = false;
+                // console.log(correctPlacement);
+                while (correctPlacement === false && correctPlacementMaxAttempts < maxAttempts) {
+                        const generateNumber = () => {
+                                index = Math.floor(Math.random() * 100);
+                                console.log('index is', index)
+                                const testing = index.toString().split('')
+                                if (testing.length === 1) {
+                                        rowIndex = 0;
+                                        colIndex = parseInt(testing[0]);
+                                } else {
+                                        rowIndex = parseInt(testing[0]);
+                                        colIndex = parseInt(testing[1]);
+                                };   
+                        };
+                        generateNumber()
+                        while ((colIndex > width - size)) {
+                                generateNumber();
+                        };
+                        console.log('col index', colIndex);
+                        console.log('row index', rowIndex);
+                        const checkPlacement = (ship, size, grid) => {
+                                let placementCount = 0;
+                                let columnIndex = colIndex;
+                                for (let cell=0; cell<size; cell++) {
+                                let gridCell = grid[rowIndex][columnIndex];
+                                        if (gridCell !== 0) {
+                                                placementCount = 0;
+                                                return
+                                        } else {
+                                                placementCount++;
+                                                columnIndex++;
+                                                if (placementCount === size) {
+                                                correctPlacement = true;
+                                                // console.log('correct palce', correctPlacement)
+                                                };
+                                        };
+                                        
+                                };
+                        };
+                        checkPlacement(ship, size, grid);
+                        correctPlacementMaxAttempts++;
+                                        const placePiece = (ship, size, grid) => {
+                                        if (correctPlacement) {
+                                                for (let cell=0; cell<size; cell++) {
+                                                grid[rowIndex][colIndex] = 1;
+                                                ship.arr[cell] = index;
+                                                colIndex++;
+                                                index++;
+                                                piecesPlaced++;
+                                                // console.log('the col index is', colIndex);
+                                                };
+                                        };
+                                };
+                        placePiece(ship, size, grid);
+                };
+                // console.log('max attempts', correctPlacementMaxAttempts)
+               
+        
+        };
+        p1Ships.forEach(ship => placeShip(ship, ship.size, leftGrid))
+        p2Ships.forEach(ship => placeShip(ship, ship.size, rightGrid))
+        // console.log('here we', piecesPlaced)
+};
+
+//  let orientation = Math.floor(Math.random()*2);
+
+//         if (orientation === 0) {
+//                 }; 
