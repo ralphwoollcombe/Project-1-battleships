@@ -1,7 +1,12 @@
 
 body {
     min-height: 90vh;
+    justify-content: center;
+    text-align: center;
     margin: 0;
+}
+.messages {
+    height: 15px;
 }
 
 .bbh-bartle-regular {

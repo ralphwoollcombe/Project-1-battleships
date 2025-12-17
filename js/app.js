@@ -300,6 +300,7 @@ const updateLeftBoard = () => {
                         cellEl.appendChild(wreck); 
                     } else {
                         cellEl.classList.add('not-ship');
+                        cellEl.textContent = '';
                     };
                  };
         };
@@ -331,6 +332,7 @@ const updateRightBoard = () => {
                         cellEl.appendChild(wreck); 
                     } else {
                         cellEl.classList.add('not-ship');
+                        cellEl.textContent = '';
                     };
                  };
         };
@@ -363,19 +365,23 @@ const handleLeftClick = (event) => {
      else if (turn === 'p2') {
      if (leftGrid[cellRow][cellCol] === 0) {
         leftGrid[cellRow][cellCol] = 3;
+        mainMessegeElement.textContent = ``;
+        p2MessageElement.textContent = 'Miss!'
         render()
-        switchPlayer();
         p1ShipSunk();
         p2ShipSunk();
         hitTally();
+        switchPlayer();
         winningShot();
      } else if (leftGrid[cellRow][cellCol] === 1) {
         leftGrid[cellRow][cellCol] = 2;
+        mainMessegeElement.textContent = ``;
+        p2MessageElement.textContent = 'Hit!'
         render();
-        switchPlayer();
         p1ShipSunk();
         p2ShipSunk();
         hitTally();
+        switchPlayer();
         winningShot();
      } else {return};
 };
@@ -389,21 +395,25 @@ const handleRightClick = (event) => {
      else if (turn === 'p1') {
      if (rightGrid[cellRow][cellCol] === 0) {
         rightGrid[cellRow][cellCol] = 3;
+        mainMessegeElement.textContent = ``;
+        p1MessageElement.textContent = 'Miss!'
         render();
-        switchPlayer();
         p1ShipSunk();
         p2ShipSunk();
         hitTally();
+        switchPlayer();
         winningShot();
         // console.log(leftGrid);
         // console.log(rightGrid);
      } else if (rightGrid[cellRow][cellCol] === 1) {
         rightGrid[cellRow][cellCol] = 2;
+        mainMessegeElement.textContent = ``;
+        p1MessageElement.textContent = 'Hit!'
         render();
-        switchPlayer();
         p1ShipSunk();
         p2ShipSunk();
         hitTally();
+        switchPlayer();
         winningShot();
      } else {return};
 };
@@ -439,9 +449,20 @@ const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, gridar
                                          };
                                 grid[firstDigit][secondDigit] = 4;
                                 });
-                        console.log(`${boat} sunk!`);
-                        playershipssunk++;
-                        console.log(playershipssunk);
+                                if (turn === 'p1') {
+                                        p2ShipsSunk += 1;
+                                        // console.log('there are', p2ShipsSunk)
+                                        p1MessageElement.textContent = `You sunk Player 2's ${boat}!`;
+                                        // console.log(`P2 ${boat} sunk!`);
+                                } else if (turn === 'p2') {
+                                        p1ShipsSunk += 1;
+                                        // console.log('there are', p2ShipsSunk)
+                                        p2MessageElement.textContent = `You sunk Player 1's ${boat}!`;
+                                        // console.log(`P2 ${boat} sunk!`);
+                                };
+                        // console.log('there are', p1ShipsSunk)
+                        // console.log('there are', p2ShipsSunk)
+                        // } else {p2MessageElement.textcontent = `P1's ${boat} sunk!`}
                         render();
                         };
                 };
@@ -475,7 +496,6 @@ const p2ShipSunk = () => {
 };
 
 const init = () => {
-        createGrid();
         leftGrid =     [[0,0,0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0,0,0],
@@ -504,15 +524,16 @@ const init = () => {
         p2ShipsSunk = 0;
         turn = 'p1';
         winner = false;
-        columnElements.forEach(col => {col.classList.remove('hidden')})
-        leftCellEls = document.querySelectorAll('#left-grid div');
-        rightCellEls = document.querySelectorAll('#right-grid div');
+        mainMessegeElement.textContent = `Player 1 take your turn.`
         flatLeftGrid = leftGrid.flat();
         flatRightGrid = rightGrid.flat();
-        //NEED TO WRITE THESE INTIAL MESSAGES        
-        render()
+        leftCellEls = document.querySelectorAll('#left-grid div');
+        rightCellEls = document.querySelectorAll('#right-grid div');
+        render();
         rightShipEls = document.querySelectorAll('.right-cell.ship');
-         rightShipEls.forEach(cell => {
+        columnElements.forEach(col => {col.classList.remove('hidden')})
+        //NEED TO WRITE THESE INTIAL MESSAGES        
+        rightShipEls.forEach(cell => {
                 cell.classList.add('covered-board')})
         leftCellEls.forEach(cell => {cell.addEventListener('click', handleLeftClick)
         });
@@ -520,11 +541,42 @@ const init = () => {
         });
 };
 
+// const createDomElements = () => {
+         
+// };
+
 const gameActivate = () => {
         if (gameActive === false) {
-                return} else {init();
+                return} else {
+                createGrid();
+                // createDomElements();
+                init();
+                render();
                 }
 };
+
+// const resetGame = () => {
+//          leftGrid =     [[0,0,0,0,0,0,0,0,0,0],
+//                         [0,0,0,0,0,0,0,0,0,0],
+//                         [0,0,0,0,0,0,0,0,0,0],
+//                         [0,0,1,0,1,1,0,0,0,0],
+//                         [0,0,1,0,0,0,0,1,0,1],
+//                         [0,0,1,0,0,0,0,1,0,1],
+//                         [0,0,1,0,0,0,0,1,0,1],
+//                         [0,0,1,0,0,0,0,0,0,1],
+//                         [0,0,0,0,0,0,0,0,0,0],
+//                         [0,0,0,1,1,1,0,0,0,0]]
+//         rightGrid =    [[0,1,0,0,0,0,0,0,0,0],
+//                         [0,1,0,0,0,0,0,0,0,0],
+//                         [0,0,0,0,0,0,0,0,0,0],
+//                         [1,0,0,0,0,0,0,0,0,0],
+//                         [1,0,0,0,0,0,0,0,0,0],
+//                         [1,0,0,0,0,1,1,1,1,1],
+//                         [0,0,0,0,0,0,0,0,0,0],
+//                         [1,1,1,1,0,0,0,1,0,0],
+//                         [0,0,0,0,0,0,0,1,0,0],
+//                         [0,0,0,0,0,0,0,1,0,0]]
+// };
 
 
 /*----------------------------- Event Listeners -----------------------------*/
@@ -540,6 +592,9 @@ p1ButtonElement.addEventListener('click', (event) => {
         cell.classList.remove('covered-board')})
         p1ButtonElement.classList.add('hidden');
         turn = 'p1';
+        p1MessageElement.textContent = '';
+        p2MessageElement.textContent = '';
+        mainMessegeElement.textContent = `Player 1 take your turn.`
         };
 });
 
@@ -550,6 +605,9 @@ p2ButtonElement.addEventListener('click', (event) => {
         cell.classList.remove('covered-board')})
         p2ButtonElement.classList.add('hidden');
         turn = 'p2';
+        p1MessageElement.textContent = '';
+        p2MessageElement.textContent = '';
+        mainMessegeElement.textContent = `Player 2 take your turn.`
         };
 });
 
@@ -559,6 +617,12 @@ startButtonElement.addEventListener('click', (event) => {
         gameActivate();
         startButtonElement.classList.add('hidden');
 });
+
+// resetButtonElement.addEventListener('click', (event) => {
+//         init();
+//         resetGame();
+//         render();
+// });
 
 /*------------------------------- Page Load ------------------------------*/
 
