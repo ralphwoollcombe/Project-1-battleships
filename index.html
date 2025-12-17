@@ -11,15 +11,17 @@
 <link href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Fjalla+One&family=Londrina+Shadow&family=Mansalva&family=Poller+One&family=Roboto:ital,wght@0,100..900;1,100..900&family=Shadows+Into+Light&family=Wellfleet&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Battleships</h1>
-    <p id="messages">Message board</p>
+    <h1 id="main-title">Battleships</h1>
+    <p class='messages' id="main-messages">Message board</p>
     <div id="grid-wrapper">
-        <div class ="column" id="left-grid-wrapper">
+        <div class ="column hidden" id="left-grid-wrapper">
             <h2 class="grid-title" id="left-grid-title">Player 1 gameboard</h2>
+            <p class="messages" id="p1-messages"></p>
             <div class="grid" id="left-grid"></div>
         </div>
-        <div class ="column" id="right-grid-wrapper">
+        <div class ="column hidden" id="right-grid-wrapper">
             <h2 class="grid-title" id="right-grid-title">Player 2 gameboard</h2>
+            <p class="'messages" id="p2-messages"></p>
             <div class="grid" id ="right-grid"></div>
         </div>
     </div>

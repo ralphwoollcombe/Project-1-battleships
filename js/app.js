@@ -100,7 +100,7 @@ let leftGrid;
 let rightGrid;
 let turn;
 let winner;
-let gameActive;
+let gameActive = false;
 
 
 //P1 variables:
@@ -130,7 +130,10 @@ const startButtonElement = document.querySelector('#start-button');
 const resetButtonElement = document.querySelector('#reset-button');
 const p1ButtonElement = document.querySelector('#p1-button');
 const p2ButtonElement = document.querySelector('#p2-button');
-const messegeElement = document.querySelector('#messages');
+const mainMessegeElement = document.querySelector('#main-messages');
+const p1MessageElement = document.querySelector('#p1-messages');
+const p2MessageElement = document.querySelector('#p2-messages');
+const columnElements = document.querySelectorAll('.column')
 let leftCellEls = [];
 let rightCellEls = [];
 let leftShipEls = [];
@@ -240,11 +243,11 @@ const declareWinner = () => {
                 //message to read "Player 1 has won the game!"
                 p1ButtonElement.classList.add('hidden');
                 p2ButtonElement.classList.add('hidden');
-                leftGrid.forEach(cell => {
+                leftShipEls.forEach(cell => {
                         cell.classList.remove('covered-board');
                         
                 });
-                rightGrid.forEach(cell => {
+                rightShipEls.forEach(cell => {
                         cell.classList.remove('covered-board');
                 });
         } else if (winner === 'p2') {
@@ -501,38 +504,34 @@ const init = () => {
         p2ShipsSunk = 0;
         turn = 'p1';
         winner = false;
+        columnElements.forEach(col => {col.classList.remove('hidden')})
         leftCellEls = document.querySelectorAll('#left-grid div');
         rightCellEls = document.querySelectorAll('#right-grid div');
         flatLeftGrid = leftGrid.flat();
         flatRightGrid = rightGrid.flat();
+        //NEED TO WRITE THESE INTIAL MESSAGES        
         render()
         rightShipEls = document.querySelectorAll('.right-cell.ship');
          rightShipEls.forEach(cell => {
                 cell.classList.add('covered-board')})
+        leftCellEls.forEach(cell => {cell.addEventListener('click', handleLeftClick)
+        });
+        rightCellEls.forEach(cell => {cell.addEventListener('click', handleRightClick)
+        });
 };
 
+const gameActivate = () => {
+        if (gameActive === false) {
+                return} else {init();
+                }
+};
 
-init();
-// switchPlayer()
-console.log(turn)
-console.log(p1ButtonElement)
-
-
-/*-----------------------------Callback Functions --------------------------------*/
 
 /*----------------------------- Event Listeners -----------------------------*/
 // leftCellEls.forEach(cell => {cell.addEventListener('mouseover', )});
 
 // rightCellEls.forEach(cell => {cell.addEventListener('click', handleRightClick)
 // });
-
-//Event listener for the left grid squares
-leftCellEls.forEach(cell => {cell.addEventListener('click', handleLeftClick)
-});
-
-//event listener for the right grid squares
- rightCellEls.forEach(cell => {cell.addEventListener('click', handleRightClick)
-});
 
 //Event listener for the P1 button of the game:
 p1ButtonElement.addEventListener('click', (event) => {
@@ -556,7 +555,9 @@ p2ButtonElement.addEventListener('click', (event) => {
 
 //Event listener for the start button of the game:
 startButtonElement.addEventListener('click', (event) => {
-
+        gameActive = true;
+        gameActivate();
+        startButtonElement.classList.add('hidden');
 });
 
 /*------------------------------- Page Load ------------------------------*/
