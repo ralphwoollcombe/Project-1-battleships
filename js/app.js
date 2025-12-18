@@ -105,7 +105,6 @@ let gameActive = false;
 
 //P1 variables:
 let p1Hits;
-let p1Shots;
 let p1ShipsSunk;
 let p1CarrierSunk;
 let p1BattleshipSunk;
@@ -115,7 +114,6 @@ let p1PatrolBoatSunk;
 
 //P2 variables:
 let p2Hits;
-let p2Shots;
 let p2ShipsSunk;
 let p2CarrierSunk;
 let p2BattleshipSunk;
@@ -254,7 +252,7 @@ const declareWinner = () => {
                 });
                 p1MessageElement.textContent = '';
                 p2MessageElement.textContent = '';
-                mainMessegeElement.textContent = 'Congratulations! Player 1 has won the game!'
+                mainMessegeElement.textContent = 'Congratulations player 1! You have won the game!'
         } else if (winner === 'p2') {
                 //message to read "Player 2 has won the game!"
                 p1ButtonElement.classList.add('hidden');
@@ -268,7 +266,7 @@ const declareWinner = () => {
                 });
                 p1MessageElement.textContent = '';
                 p2MessageElement.textContent = '';
-                mainMessegeElement.textContent = 'Congratulations! Player 2 has won the game!'
+                mainMessegeElement.textContent = 'Congratulations player 2! You have won the game!'
         };
 };
 
@@ -506,8 +504,6 @@ const randomShipBoards = () => {
         let rowIndex = 10;
         let colIndex = 10;
         let piecesPlaced = 0;
-        // const maxAttempts;
-        // let correctPlacementMaxAttempts = 0;
         const placeShip = (ship, size, grid) => {
                 let orientation = Math.floor(Math.random() * 2);
                 //this is for vertical placement
@@ -518,14 +514,13 @@ const randomShipBoards = () => {
                 let correctPlacement = false;
                 let furtherCorrectPlacement = false;
                 let finalCorrectPlacement = false;
-                // console.log(correctPlacement);
                         while (correctPlacement === false || furtherCorrectPlacement === false || finalCorrectPlacement === false) {
                         correctPlacement = false;
                         furtherCorrectPlacement = false;
                         finalCorrectPlacement = false;
                         const generateNumber = () => {
                                         index = Math.floor(Math.random() * 100);
-                                        console.log('index is', index)
+                                        // console.log('index is', index)
                                         const testing = index.toString().split('')
                                         if (testing.length === 1) {
                                                 rowIndex = 0;
@@ -647,7 +642,6 @@ const randomShipBoards = () => {
                                                 };
                                         };
                         placePiece(ship, size, grid);
-                // console.log('max attempts', correctPlacementMaxAttempts)
                 } else {
                 //this is for horizontal placement
                 index = 0;
@@ -674,12 +668,12 @@ const randomShipBoards = () => {
                                         };   
                                 };
                         generateNumber()
-                                        console.log('index is', index)
+                                        // console.log('index is', index)
                                         while ((colIndex > width - size)) {
                                                 generateNumber();
                         };
-                        console.log('col index', colIndex);
-                        console.log('row index', rowIndex);
+                        // console.log('col index', colIndex);
+                        // console.log('row index', rowIndex);
                                 const checkPlacement = (ship, size, grid) => {
                                         let placementCount = 0;
                                         let columnIndex = colIndex;
@@ -691,7 +685,7 @@ const randomShipBoards = () => {
                                                 } else {
                                                         placementCount++;
                                                         columnIndex++;
-                                                        console.log('standard placement count', ship.name, placementCount, rowIndex, columnIndex)
+                                                        // console.log('standard placement count', ship.name, placementCount, rowIndex, columnIndex)
                                                         if (placementCount === size - 1) {
                                                         correctPlacement = true;
                                                         // console.log('correct palce', correctPlacement)
@@ -739,7 +733,7 @@ const randomShipBoards = () => {
                                                                                         };
                                                                                 };
                                                                         };
-                                                                console.log('further count is at', furtherplacementCount)
+                                                                // console.log('further count is at', furtherplacementCount)
                                                                 };
                                                         };
                                                         const finalCheck = (ship, size, grid) => {
@@ -765,7 +759,7 @@ const randomShipBoards = () => {
                                                                                 };
                                                                 };
                                                         };
-                                                        console.log('further placement', furtherCorrectPlacement);
+                                                        // console.log('further placement', furtherCorrectPlacement);
                                                         furtherCheck(ship, size, grid);
                                                         finalCheck(ship, size, grid);
                                                         };
@@ -799,6 +793,26 @@ p1Ships.forEach(ship => placeShip(ship, ship.size, leftGrid))
 p2Ships.forEach(ship => placeShip(ship, ship.size, rightGrid))
 };
 
+const resetGame = () => {
+        rightCellEls.forEach(cell => {
+                cell.classList.remove('ship');
+                cell.classList.remove('not-ship');
+                cell.textContent = '';
+                cell.classList.remove('covered-board');
+        });
+        leftCellEls.forEach(cell => {
+                cell.classList.remove('ship')
+                cell.classList.remove('not-ship');
+                cell.textContent = ''
+                cell.classList.remove('covered-board');
+        });
+        p2ButtonElement.classList.add('hidden');
+        p1ButtonElement.classList.add('hidden');
+        // console.log(rightCellEls);
+        // console.log(leftCellEls);
+        // console.log(p1BattleshipSunk);
+        // console.log()
+};
 
 const init = () => {
         leftGrid =     [[0,0,0,0,0,0,0,0,0,0],
@@ -821,32 +835,10 @@ const init = () => {
                         [0,0,0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0,0,0]]
-        // leftGrid =     [[0,0,0,0,0,0,0,0,0,0],
-        //                 [0,0,0,0,0,0,0,0,0,0],
-        //                 [0,0,0,0,0,0,0,0,0,0],
-        //                 [0,0,1,0,1,1,0,0,0,0],
-        //                 [0,0,1,0,0,0,0,1,0,1],
-        //                 [0,0,1,0,0,0,0,1,0,1],
-        //                 [0,0,1,0,0,0,0,1,0,1],
-        //                 [0,0,1,0,0,0,0,0,0,1],
-        //                 [0,0,0,0,0,0,0,0,0,0],
-        //                 [0,0,0,1,1,1,0,0,0,0]]
-        // rightGrid =    [[0,1,0,0,0,0,0,0,0,0],
-        //                 [0,1,0,0,0,0,0,0,0,0],
-        //                 [0,0,0,0,0,0,0,0,0,0],
-        //                 [1,0,0,0,0,0,0,0,0,0],
-        //                 [1,0,0,0,0,0,0,0,0,0],
-        //                 [1,0,0,0,0,1,1,1,1,1],
-        //                 [0,0,0,0,0,0,0,0,0,0],
-        //                 [1,1,1,1,0,0,0,1,0,0],
-        //                 [0,0,0,0,0,0,0,1,0,0],
-        //                 [0,0,0,0,0,0,0,1,0,0]]
         randomShipBoards();
         // console.log(leftGrid)
         p1Hits = 0;
         p2Hits = 0;
-        p1Shots = 0;
-        p2Shots = 0;
         p1ShipsSunk = 0;
         p2ShipsSunk = 0;
         turn = 'p1';
@@ -854,56 +846,33 @@ const init = () => {
         mainMessegeElement.textContent = `Player 1 take your turn.`
         flatLeftGrid = leftGrid.flat();
         flatRightGrid = rightGrid.flat();
-        leftCellEls = document.querySelectorAll('#left-grid div');
-        rightCellEls = document.querySelectorAll('#right-grid div');
-        render();
+        render()
         rightShipEls = document.querySelectorAll('.right-cell.ship');
-        columnElements.forEach(col => {col.classList.remove('hidden')})
-        //NEED TO WRITE THESE INTIAL MESSAGES        
         rightShipEls.forEach(cell => {
                 cell.classList.add('covered-board')})
+};
+
+const createDomElements = () => {
+        leftCellEls = document.querySelectorAll('#left-grid div');
+        rightCellEls = document.querySelectorAll('#right-grid div');
+        // render();
+        columnElements.forEach(col => {col.classList.remove('hidden')})
         leftCellEls.forEach(cell => {cell.addEventListener('click', handleLeftClick)
         });
         rightCellEls.forEach(cell => {cell.addEventListener('click', handleRightClick)
         });
-};
 
-// const createDomElements = () => {
-         
-// };
+};
 
 const gameActivate = () => {
         if (gameActive === false) {
                 return} else {
                 createGrid();
-                // createDomElements();
+                createDomElements();
                 init();
                 render();
                 }
 };
-
-// const resetGame = () => {
-//          leftGrid =     [[0,0,0,0,0,0,0,0,0,0],
-//                         [0,0,0,0,0,0,0,0,0,0],
-//                         [0,0,0,0,0,0,0,0,0,0],
-//                         [0,0,1,0,1,1,0,0,0,0],
-//                         [0,0,1,0,0,0,0,1,0,1],
-//                         [0,0,1,0,0,0,0,1,0,1],
-//                         [0,0,1,0,0,0,0,1,0,1],
-//                         [0,0,1,0,0,0,0,0,0,1],
-//                         [0,0,0,0,0,0,0,0,0,0],
-//                         [0,0,0,1,1,1,0,0,0,0]]
-//         rightGrid =    [[0,1,0,0,0,0,0,0,0,0],
-//                         [0,1,0,0,0,0,0,0,0,0],
-//                         [0,0,0,0,0,0,0,0,0,0],
-//                         [1,0,0,0,0,0,0,0,0,0],
-//                         [1,0,0,0,0,0,0,0,0,0],
-//                         [1,0,0,0,0,1,1,1,1,1],
-//                         [0,0,0,0,0,0,0,0,0,0],
-//                         [1,1,1,1,0,0,0,1,0,0],
-//                         [0,0,0,0,0,0,0,1,0,0],
-//                         [0,0,0,0,0,0,0,1,0,0]]
-// };
 
 
 /*----------------------------- Event Listeners -----------------------------*/
@@ -943,22 +912,26 @@ startButtonElement.addEventListener('click', (event) => {
         gameActive = true;
         gameActivate();
         startButtonElement.classList.add('hidden');
+        resetButtonElement.classList.remove('hidden');
 });
 
-// resetButtonElement.addEventListener('click', (event) => {
-//         init();
-//         resetGame();
-//         render();
-// });
+resetButtonElement.addEventListener('click', (event) => {
+        resetGame();
+        init();
+        
+});
 
 /*------------------------------- Page Load ------------------------------*/
 
-//REFACTORING computer generated positioning:
-//1. We need a function that chooses a random spot on our 2D array to see if it is equal to 0. 
-//2. This needs to loop while count<size to see if all the spots are free (equal to 0).
-//3. If the incremental value of the grid does not exist, need to redo the whole function.
-//4. If all spaces are equal to 0, need to loop round again and change the value of the grid to 1.
-//5. If this is complete need to move onto the next ship and do it again.
+//TO DO:
+//1. Make it so that the reset button is functional and sets up the game at the beginning again
+        //This involves reseting the grids to zeros.
+        //Making all the div sections that relate also equal zero again.
+        //removing all img sections.
+        //setting all counters to 0 or false.
+        //message content back to starting text.
+        //remove all .ship and not ship classes to div elements.
+        //
 
 
 
