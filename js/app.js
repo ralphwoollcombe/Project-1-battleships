@@ -166,13 +166,13 @@ const p1Carrier = new Ship('Carrier', 5);
 const p1Battleship= new Ship('Battleship', 4);
 const p1Destroyer = new Ship('Destroyer', 3);
 const p1Submarine = new Ship('Submarine', 3);
-const p1PatrolBoat = new Ship('Patrol Boat', 2);
+const p1PatrolBoat = new Ship('Patrol', 2);
 
 const p2Carrier = new Ship('Carrier', 5);
 const p2Battleship = new Ship('Battleship', 4);
 const p2Destroyer = new Ship('Destroyer', 3);
 const p2Submarine = new Ship('Submarine', 3);
-const p2PatrolBoat = new Ship('Patrol Boat', 2);
+const p2PatrolBoat = new Ship('Patrol', 2);
 
 const p1Ships = [p1Carrier, p1Battleship, p1Destroyer, p1Submarine, p1PatrolBoat];
 const p2Ships = [p2Carrier, p2Battleship, p2Destroyer, p2Submarine, p2PatrolBoat];
@@ -273,6 +273,8 @@ const declareWinner = () => {
 const updateBoard = () => {
         updateLeftBoard();
         updateRightBoard();
+        console.log(rightCellEls)
+        console.log(leftCellEls)
 };
 
 const updateLeftBoard = () => {
@@ -292,7 +294,7 @@ const updateLeftBoard = () => {
                         cellEl.textContent = 'X';
                         flatLeftGrid[index] = 2;
                         //this signifies a hit
-                    } else if  (leftGrid[row][col] === 3) {
+                    } else if (leftGrid[row][col] === 3) {
                         cellEl.classList.add('not-ship');
                         cellEl.textContent = 'X';
                         flatLeftGrid[index] = 3;
@@ -301,10 +303,20 @@ const updateLeftBoard = () => {
                        cellEl.classList.add('ship');
                        cellEl.textContent = ''; 
                         flatLeftGrid[index] = 4;
-                        let wreck = document.createElement('img');
-                        wreck.src = "./assets/shipwreck.png";
-                        wreck.classList.add('shipwreck');
-                        cellEl.appendChild(wreck); 
+                        let bug = document.createElement('img');
+                        if (cellEl.classList.contains('Carrier')) {
+                                bug.src = './Assets/bugs/carrier.png'
+                        } else if (cellEl.classList.contains('Battleship')) {
+                                bug.src = './Assets/bugs/battleship.png'
+                        } else if (cellEl.classList.contains('Destroyer')) {
+                                bug.src = './Assets/bugs/destroyer.png'
+                        } else if (cellEl.classList.contains('Submarine')) {
+                                bug.src = './Assets/bugs/submarine.png'
+                        } else if (cellEl.classList.contains('Patrol')) {
+                                bug.src = './Assets/bugs/patrol.png'
+                        };
+                        bug.classList.add('bug');
+                        cellEl.appendChild(bug); 
                     } else {
                         cellEl.classList.add('not-ship');
                         cellEl.textContent = '';
@@ -334,10 +346,20 @@ const updateRightBoard = () => {
                        cellEl.classList.add('ship');
                        cellEl.textContent = ''; 
                        flatRightGrid[index] = 4;
-                        let wreck = document.createElement('img');
-                        wreck.src = "./assets/shipwreck.png";
-                        wreck.classList.add('shipwreck');
-                        cellEl.appendChild(wreck); 
+                       let bug = document.createElement('img');
+                        if (cellEl.classList.contains('Carrier')) {
+                                bug.src = './Assets/bugs/carrier.png'
+                        } else if (cellEl.classList.contains('Battleship')) {
+                                bug.src = './Assets/bugs/battleship.png'
+                        } else if (cellEl.classList.contains('Destroyer')) {
+                                bug.src = './Assets/bugs/destroyer.png'
+                        } else if (cellEl.classList.contains('Submarine')) {
+                                bug.src = './Assets/bugs/submarine.png'
+                        } else if (cellEl.classList.contains('Patrol')) {
+                                bug.src = './Assets/bugs/patrol.png'
+                        };
+                        bug.classList.add('bug');
+                        cellEl.appendChild(bug); 
                     } else {
                         cellEl.classList.add('not-ship');
                         cellEl.textContent = '';
@@ -433,13 +455,13 @@ const render = () => {
 };
 
 //SHIP SUNK FUNCTIONS:
-const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, gridarr, flatgrid) => {
+const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, boardCells, gridarr, flatgrid) => {
          boatarr.forEach((cell, index) => {
                         gridarr.push(flatgrid[cell]);
                         boatsunk = gridarr.every((cell) => {
                                 return cell === 2;})                          
                 });
-                const ifSunk = (boatsunk, boatarr, grid, boat, playershipssunk) => {
+                const ifSunk = (boatsunk, boatarr, grid, boat, playershipssunk, boardCells) => {
                         if (boatsunk) {
                                 boatarr.forEach((cell) => {
                                 let firstDigit;
@@ -453,6 +475,7 @@ const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, gridar
                                                 secondDigit = parseInt(testing[1]);
                                          };
                                 grid[firstDigit][secondDigit] = 4;
+                                boardCells[cell].classList.add(boat);
                                 });
                                 if (turn === 'p1') {
                                         p2ShipsSunk += 1;
@@ -471,7 +494,7 @@ const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, gridar
                         render();
                         };
                 };
-        ifSunk(boatsunk, boatarr, grid , boat, playershipssunk);
+        ifSunk(boatsunk, boatarr, grid , boat, playershipssunk, boardCells);
 };
 
 //P1 ships sunk
@@ -481,11 +504,11 @@ const p1ShipSunk = () => {
         let leftGridDestroyerArr = [];
         let leftGridSubmarineArr = [];
         let leftGridPatrolBoatArr = [];
-        checkSunkSquares(p1CarrierSunk, p1Carrier.arr,leftGrid, 'Carrier', p1ShipsSunk, leftGridCarrierArr, flatLeftGrid );
-        checkSunkSquares(p1BattleshipSunk, p1Battleship.arr,leftGrid, 'BattleShip', p1ShipsSunk, leftGridBattleshipArr, flatLeftGrid);
-        checkSunkSquares(p1DestroyerSunk, p1Destroyer.arr,leftGrid, 'Destroyer', p1ShipsSunk, leftGridDestroyerArr, flatLeftGrid);
-        checkSunkSquares(p1SubmarineSunk, p1Submarine.arr,leftGrid, 'Submarine', p1ShipsSunk, leftGridSubmarineArr, flatLeftGrid);
-        checkSunkSquares(p1PatrolBoatSunk, p1PatrolBoat.arr,leftGrid, 'Patrol Boat', p1ShipsSunk, leftGridPatrolBoatArr, flatLeftGrid);
+        checkSunkSquares(p1CarrierSunk, p1Carrier.arr,leftGrid, 'Carrier', p1ShipsSunk, leftCellEls, leftGridCarrierArr, flatLeftGrid );
+        checkSunkSquares(p1BattleshipSunk, p1Battleship.arr,leftGrid, 'Battleship', p1ShipsSunk, leftCellEls, leftGridBattleshipArr, flatLeftGrid);
+        checkSunkSquares(p1DestroyerSunk, p1Destroyer.arr,leftGrid, 'Destroyer', p1ShipsSunk, leftCellEls, leftGridDestroyerArr, flatLeftGrid);
+        checkSunkSquares(p1SubmarineSunk, p1Submarine.arr,leftGrid, 'Submarine', p1ShipsSunk, leftCellEls, leftGridSubmarineArr, flatLeftGrid);
+        checkSunkSquares(p1PatrolBoatSunk, p1PatrolBoat.arr,leftGrid, 'Patrol', p1ShipsSunk, leftCellEls, leftGridPatrolBoatArr, flatLeftGrid);
 };
 
 const p2ShipSunk = () => {
@@ -494,11 +517,11 @@ const p2ShipSunk = () => {
         let rightGridDestroyerArr = [];
         let rightGridSubmarineArr = [];
         let rightGridPatrolBoatArr = [];
-        checkSunkSquares(p2CarrierSunk, p2Carrier.arr, rightGrid, 'Carrier', p2ShipsSunk, rightGridCarrierArr, flatRightGrid);
-        checkSunkSquares(p2BattleshipSunk, p2Battleship.arr, rightGrid, 'Battleship', p2ShipsSunk, rightGridBattleshipArr, flatRightGrid);
-        checkSunkSquares(p2DestroyerSunk, p2Destroyer.arr, rightGrid, 'Destroyer', p2ShipsSunk, rightGridDestroyerArr, flatRightGrid);
-        checkSunkSquares(p2SubmarineSunk, p2Submarine.arr, rightGrid, 'Submarine', p2ShipsSunk, rightGridSubmarineArr, flatRightGrid);
-        checkSunkSquares(p2PatrolBoatSunk, p2PatrolBoat.arr, rightGrid, 'Patrol Boat', p2ShipsSunk, rightGridPatrolBoatArr, flatRightGrid);
+        checkSunkSquares(p2CarrierSunk, p2Carrier.arr, rightGrid, 'Carrier', p2ShipsSunk, rightCellEls, rightGridCarrierArr, flatRightGrid);
+        checkSunkSquares(p2BattleshipSunk, p2Battleship.arr, rightGrid, 'Battleship', p2ShipsSunk, rightCellEls, rightGridBattleshipArr, flatRightGrid);
+        checkSunkSquares(p2DestroyerSunk, p2Destroyer.arr, rightGrid, 'Destroyer', p2ShipsSunk, rightCellEls, rightGridDestroyerArr, flatRightGrid);
+        checkSunkSquares(p2SubmarineSunk, p2Submarine.arr, rightGrid, 'Submarine', p2ShipsSunk, rightCellEls, rightGridSubmarineArr, flatRightGrid);
+        checkSunkSquares(p2PatrolBoatSunk, p2PatrolBoat.arr, rightGrid, 'Patrol', p2ShipsSunk, rightCellEls, rightGridPatrolBoatArr, flatRightGrid);
 };
 
 const randomShipBoards = () => {
@@ -795,6 +818,11 @@ const randomShipBoards = () => {
 p1Ships.forEach(ship => placeShip(ship, ship.size, leftGrid))
 p2Ships.forEach(ship => placeShip(ship, ship.size, rightGrid))
 };
+
+const markShips = () => {
+        
+};
+
 const resetGame = () => {
         rightCellEls.forEach(cell => {
                 cell.classList.remove('ship');

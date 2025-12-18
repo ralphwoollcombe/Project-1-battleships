@@ -68,9 +68,9 @@ body {
 }
 
 .cell.ship {
-    background-color:rgba(152, 188, 220, 1);
-    border:2px solid blue;
-    color: red;
+    background-color:rgba(12, 150, 0, 0.645);
+    border:2px solid green;
+    color: rgb(255, 100, 239);
 }
 
 .cell.ship.covered-board {
@@ -92,6 +92,10 @@ body {
     display: none;
 }
 
+.bug {
+    position: center;
+    width: 65px;
+}
 .shipwreck {
     position: center;
     width: 45px;
