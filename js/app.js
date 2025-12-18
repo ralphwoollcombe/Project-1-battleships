@@ -162,17 +162,17 @@ class Ship {
         };
 };      
 
-const p1Carrier = new Ship('Carrier', 5);
-const p1Battleship= new Ship('Battleship', 4);
-const p1Destroyer = new Ship('Destroyer', 3);
-const p1Submarine = new Ship('Submarine', 3);
-const p1PatrolBoat = new Ship('Patrol', 2);
+const p1Carrier = new Ship('Assassin', 5);
+const p1Battleship= new Ship('Stag', 4);
+const p1Destroyer = new Ship('Leafmimic', 3);
+const p1Submarine = new Ship('Stinker', 3);
+const p1PatrolBoat = new Ship('Ladybird', 2);
 
-const p2Carrier = new Ship('Carrier', 5);
-const p2Battleship = new Ship('Battleship', 4);
-const p2Destroyer = new Ship('Destroyer', 3);
-const p2Submarine = new Ship('Submarine', 3);
-const p2PatrolBoat = new Ship('Patrol', 2);
+const p2Carrier = new Ship('Assassin', 5);
+const p2Battleship = new Ship('Stag', 4);
+const p2Destroyer = new Ship('Leafmimic', 3);
+const p2Submarine = new Ship('Stinker', 3);
+const p2PatrolBoat = new Ship('Ladybird', 2);
 
 const p1Ships = [p1Carrier, p1Battleship, p1Destroyer, p1Submarine, p1PatrolBoat];
 const p2Ships = [p2Carrier, p2Battleship, p2Destroyer, p2Submarine, p2PatrolBoat];
@@ -247,9 +247,11 @@ const declareWinner = () => {
                 leftShipEls.forEach(cell => {
                         cell.classList.remove('covered-board');
                 });
+                leftGridElement.classList.remove('custom-cursor');
                 rightShipEls.forEach(cell => {
                         cell.classList.remove('covered-board');
                 });
+                leftGridElement.classList.remove('custom-cursor');
                 p1MessageElement.textContent = '';
                 p2MessageElement.textContent = '';
                 mainMessegeElement.textContent = 'Congratulations player 1! You have won the game!'
@@ -259,11 +261,12 @@ const declareWinner = () => {
                 p2ButtonElement.classList.add('hidden');
                 leftShipEls.forEach(cell => {
                         cell.classList.remove('covered-board');
-                        
                 });
+                leftGridElement.classList.remove('custom-cursor');
                 rightShipEls.forEach(cell => {
                         cell.classList.remove('covered-board');
                 });
+                leftGridElement.classList.remove('custom-cursor');
                 p1MessageElement.textContent = '';
                 p2MessageElement.textContent = '';
                 mainMessegeElement.textContent = 'Congratulations player 2! You have won the game!'
@@ -273,8 +276,8 @@ const declareWinner = () => {
 const updateBoard = () => {
         updateLeftBoard();
         updateRightBoard();
-        console.log(rightCellEls)
-        console.log(leftCellEls)
+        // console.log(rightCellEls)
+        // console.log(leftCellEls)
 };
 
 const updateLeftBoard = () => {
@@ -304,18 +307,19 @@ const updateLeftBoard = () => {
                        cellEl.textContent = ''; 
                         flatLeftGrid[index] = 4;
                         let bug = document.createElement('img');
-                        if (cellEl.classList.contains('Carrier')) {
+                        if (cellEl.classList.contains('Assassin')) {
                                 bug.src = './Assets/bugs/carrier.png'
-                        } else if (cellEl.classList.contains('Battleship')) {
+                        } else if (cellEl.classList.contains('Stag')) {
                                 bug.src = './Assets/bugs/battleship.png'
-                        } else if (cellEl.classList.contains('Destroyer')) {
+                        } else if (cellEl.classList.contains('Leafmimic')) {
                                 bug.src = './Assets/bugs/destroyer.png'
-                        } else if (cellEl.classList.contains('Submarine')) {
+                        } else if (cellEl.classList.contains('Stinker')) {
                                 bug.src = './Assets/bugs/submarine.png'
-                        } else if (cellEl.classList.contains('Patrol')) {
+                        } else if (cellEl.classList.contains('Ladybird')) {
                                 bug.src = './Assets/bugs/patrol.png'
                         };
                         bug.classList.add('bug');
+                        cellEl.classList.add('shipwreck');
                         cellEl.appendChild(bug); 
                     } else {
                         cellEl.classList.add('not-ship');
@@ -347,19 +351,20 @@ const updateRightBoard = () => {
                        cellEl.textContent = ''; 
                        flatRightGrid[index] = 4;
                        let bug = document.createElement('img');
-                        if (cellEl.classList.contains('Carrier')) {
+                        if (cellEl.classList.contains('Assassin')) {
                                 bug.src = './Assets/bugs/carrier.png'
-                        } else if (cellEl.classList.contains('Battleship')) {
+                        } else if (cellEl.classList.contains('Stag')) {
                                 bug.src = './Assets/bugs/battleship.png'
-                        } else if (cellEl.classList.contains('Destroyer')) {
+                        } else if (cellEl.classList.contains('Leafmimic')) {
                                 bug.src = './Assets/bugs/destroyer.png'
-                        } else if (cellEl.classList.contains('Submarine')) {
+                        } else if (cellEl.classList.contains('Stinker')) {
                                 bug.src = './Assets/bugs/submarine.png'
-                        } else if (cellEl.classList.contains('Patrol')) {
+                        } else if (cellEl.classList.contains('Ladybird')) {
                                 bug.src = './Assets/bugs/patrol.png'
                         };
                         bug.classList.add('bug');
                         cellEl.appendChild(bug); 
+                        cellEl.classList.add('shipwreck');
                     } else {
                         cellEl.classList.add('not-ship');
                         cellEl.textContent = '';
@@ -374,12 +379,12 @@ const switchPlayer = () => {
         rightShipEls = document.querySelectorAll('.right-cell.ship');
         if (turn === 'p1') {
         leftShipEls.forEach(cell => {
-                cell.classList.add('covered-board')})
+                cell.classList.add('covered-board')});
         turn = '';
         p2ButtonElement.classList.remove('hidden');
         } else if (turn === 'p2') {
         rightShipEls.forEach(cell => {
-                cell.classList.add('covered-board')})
+                cell.classList.add('covered-board')});
         turn = '';
         p1ButtonElement.classList.remove('hidden');
         };
@@ -397,6 +402,8 @@ const handleLeftClick = (event) => {
         leftGrid[cellRow][cellCol] = 3;
         mainMessegeElement.textContent = ``;
         p2MessageElement.textContent = 'Miss!'
+        leftGridElement.classList.remove('custom-cursor');
+        rightGridElement.classList.remove('custom-cursor');
         render()
         p1ShipSunk();
         p2ShipSunk();
@@ -407,6 +414,8 @@ const handleLeftClick = (event) => {
         leftGrid[cellRow][cellCol] = 2;
         mainMessegeElement.textContent = ``;
         p2MessageElement.textContent = 'Hit!'
+        leftGridElement.classList.remove('custom-cursor');
+        rightGridElement.classList.remove('custom-cursor');
         render();
         p1ShipSunk();
         p2ShipSunk();
@@ -426,7 +435,9 @@ const handleRightClick = (event) => {
      if (rightGrid[cellRow][cellCol] === 0) {
         rightGrid[cellRow][cellCol] = 3;
         mainMessegeElement.textContent = ``;
-        p1MessageElement.textContent = 'Miss!'
+        p1MessageElement.textContent = 'Miss!';
+        leftGridElement.classList.remove('custom-cursor');
+        rightGridElement.classList.remove('custom-cursor');
         render();
         p1ShipSunk();
         p2ShipSunk();
@@ -438,7 +449,9 @@ const handleRightClick = (event) => {
      } else if (rightGrid[cellRow][cellCol] === 1) {
         rightGrid[cellRow][cellCol] = 2;
         mainMessegeElement.textContent = ``;
-        p1MessageElement.textContent = 'Hit!'
+        p1MessageElement.textContent = 'Hit!';
+        leftGridElement.classList.remove('custom-cursor');
+        rightGridElement.classList.remove('custom-cursor');
         render();
         p1ShipSunk();
         p2ShipSunk();
@@ -480,12 +493,12 @@ const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, boardC
                                 if (turn === 'p1') {
                                         p2ShipsSunk += 1;
                                         // console.log('there are', p2ShipsSunk)
-                                        p1MessageElement.textContent = `You sunk Player 2's ${boat}!`;
+                                        p1MessageElement.textContent = `You found Player 2's ${boat}!`;
                                         // console.log(`P2 ${boat} sunk!`);
                                 } else if (turn === 'p2') {
                                         p1ShipsSunk += 1;
                                         // console.log('there are', p2ShipsSunk)
-                                        p2MessageElement.textContent = `You sunk Player 1's ${boat}!`;
+                                        p2MessageElement.textContent = `You found Player 1's ${boat}!`;
                                         // console.log(`P2 ${boat} sunk!`);
                                 };
                         // console.log('there are', p1ShipsSunk)
@@ -504,11 +517,11 @@ const p1ShipSunk = () => {
         let leftGridDestroyerArr = [];
         let leftGridSubmarineArr = [];
         let leftGridPatrolBoatArr = [];
-        checkSunkSquares(p1CarrierSunk, p1Carrier.arr,leftGrid, 'Carrier', p1ShipsSunk, leftCellEls, leftGridCarrierArr, flatLeftGrid );
-        checkSunkSquares(p1BattleshipSunk, p1Battleship.arr,leftGrid, 'Battleship', p1ShipsSunk, leftCellEls, leftGridBattleshipArr, flatLeftGrid);
-        checkSunkSquares(p1DestroyerSunk, p1Destroyer.arr,leftGrid, 'Destroyer', p1ShipsSunk, leftCellEls, leftGridDestroyerArr, flatLeftGrid);
-        checkSunkSquares(p1SubmarineSunk, p1Submarine.arr,leftGrid, 'Submarine', p1ShipsSunk, leftCellEls, leftGridSubmarineArr, flatLeftGrid);
-        checkSunkSquares(p1PatrolBoatSunk, p1PatrolBoat.arr,leftGrid, 'Patrol', p1ShipsSunk, leftCellEls, leftGridPatrolBoatArr, flatLeftGrid);
+        checkSunkSquares(p1CarrierSunk, p1Carrier.arr,leftGrid, 'Assassin', p1ShipsSunk, leftCellEls, leftGridCarrierArr, flatLeftGrid );
+        checkSunkSquares(p1BattleshipSunk, p1Battleship.arr,leftGrid, 'Stag', p1ShipsSunk, leftCellEls, leftGridBattleshipArr, flatLeftGrid);
+        checkSunkSquares(p1DestroyerSunk, p1Destroyer.arr,leftGrid, 'Leafmimic', p1ShipsSunk, leftCellEls, leftGridDestroyerArr, flatLeftGrid);
+        checkSunkSquares(p1SubmarineSunk, p1Submarine.arr,leftGrid, 'Stinker', p1ShipsSunk, leftCellEls, leftGridSubmarineArr, flatLeftGrid);
+        checkSunkSquares(p1PatrolBoatSunk, p1PatrolBoat.arr,leftGrid, 'Ladybird', p1ShipsSunk, leftCellEls, leftGridPatrolBoatArr, flatLeftGrid);
 };
 
 const p2ShipSunk = () => {
@@ -517,11 +530,11 @@ const p2ShipSunk = () => {
         let rightGridDestroyerArr = [];
         let rightGridSubmarineArr = [];
         let rightGridPatrolBoatArr = [];
-        checkSunkSquares(p2CarrierSunk, p2Carrier.arr, rightGrid, 'Carrier', p2ShipsSunk, rightCellEls, rightGridCarrierArr, flatRightGrid);
-        checkSunkSquares(p2BattleshipSunk, p2Battleship.arr, rightGrid, 'Battleship', p2ShipsSunk, rightCellEls, rightGridBattleshipArr, flatRightGrid);
-        checkSunkSquares(p2DestroyerSunk, p2Destroyer.arr, rightGrid, 'Destroyer', p2ShipsSunk, rightCellEls, rightGridDestroyerArr, flatRightGrid);
-        checkSunkSquares(p2SubmarineSunk, p2Submarine.arr, rightGrid, 'Submarine', p2ShipsSunk, rightCellEls, rightGridSubmarineArr, flatRightGrid);
-        checkSunkSquares(p2PatrolBoatSunk, p2PatrolBoat.arr, rightGrid, 'Patrol', p2ShipsSunk, rightCellEls, rightGridPatrolBoatArr, flatRightGrid);
+        checkSunkSquares(p2CarrierSunk, p2Carrier.arr, rightGrid, 'Assassin', p2ShipsSunk, rightCellEls, rightGridCarrierArr, flatRightGrid);
+        checkSunkSquares(p2BattleshipSunk, p2Battleship.arr, rightGrid, 'Stag', p2ShipsSunk, rightCellEls, rightGridBattleshipArr, flatRightGrid);
+        checkSunkSquares(p2DestroyerSunk, p2Destroyer.arr, rightGrid, 'Leafmimic', p2ShipsSunk, rightCellEls, rightGridDestroyerArr, flatRightGrid);
+        checkSunkSquares(p2SubmarineSunk, p2Submarine.arr, rightGrid, 'Stinker', p2ShipsSunk, rightCellEls, rightGridSubmarineArr, flatRightGrid);
+        checkSunkSquares(p2PatrolBoatSunk, p2PatrolBoat.arr, rightGrid, 'Ladybird', p2ShipsSunk, rightCellEls, rightGridPatrolBoatArr, flatRightGrid);
 };
 
 const randomShipBoards = () => {
@@ -829,15 +842,30 @@ const resetGame = () => {
                 cell.classList.remove('not-ship');
                 cell.textContent = '';
                 cell.classList.remove('covered-board');
+                cell.classList.remove('Assassin');
+                cell.classList.remove('Stag');
+                cell.classList.remove('Leafmimic');
+                cell.classList.remove('Stinker');
+                cell.classList.remove('Ladybird');
                 cell.classList.remove('shipwreck');
         });
+        rightGridElement.classList.add('custom-cursor');
+        p1MessageElement.textContent = '';
+        p2MessageElement.textContent = '';
+        mainMessegeElement.textContent = '';
         leftCellEls.forEach(cell => {
                 cell.classList.remove('ship')
                 cell.classList.remove('not-ship');
                 cell.textContent = ''
                 cell.classList.remove('covered-board');
+                cell.classList.remove('Assassin');
+                cell.classList.remove('Stag');
+                cell.classList.remove('Leafmimic');
+                cell.classList.remove('Stinker');
+                cell.classList.remove('Ladybird');
                 cell.classList.remove('shipwreck');
         });
+        leftGridElement.classList.remove('custom-cursor');
         p2ButtonElement.classList.add('hidden');
         p1ButtonElement.classList.add('hidden');
         // console.log(rightCellEls);
@@ -880,7 +908,9 @@ const init = () => {
         render()
         rightShipEls = document.querySelectorAll('.right-cell.ship');
         rightShipEls.forEach(cell => {
-                cell.classList.add('covered-board')})
+                cell.classList.add('covered-board')});
+        leftGridElement.classList.remove('custom-cursor');
+
 };
 
 const createDomElements = () => {
@@ -917,6 +947,8 @@ p1ButtonElement.addEventListener('click', (event) => {
         if (turn) {return
         } else {leftShipEls.forEach(cell => {
         cell.classList.remove('covered-board')})
+        leftGridElement.classList.remove('custom-cursor');
+        rightGridElement.classList.add('custom-cursor');
         p1ButtonElement.classList.add('hidden');
         turn = 'p1';
         p1MessageElement.textContent = '';
@@ -930,6 +962,8 @@ p2ButtonElement.addEventListener('click', (event) => {
         if (turn) {return
         } else {rightShipEls.forEach(cell => {
         cell.classList.remove('covered-board')})
+        rightGridElement.classList.remove('custom-cursor');
+        leftGridElement.classList.add('custom-cursor');
         p2ButtonElement.classList.add('hidden');
         turn = 'p2';
         p1MessageElement.textContent = '';
@@ -951,6 +985,10 @@ resetButtonElement.addEventListener('click', (event) => {
         init();
         
 });
+
+// leftGridElement.addEventListener('mouseover', (event) => {
+//         leftGridElement
+// })
 
 /*------------------------------- Page Load ------------------------------*/
 

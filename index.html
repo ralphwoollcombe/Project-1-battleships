@@ -9,29 +9,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Fjalla+One&family=Londrina+Shadow&family=Mansalva&family=Poller+One&family=Roboto:ital,wght@0,100..900;1,100..900&family=Shadows+Into+Light&family=Wellfleet&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Bungee&family=Fjalla+One&family=Freckle+Face&family=Londrina+Shadow&family=Mansalva&family=Poller+One&family=Ribeye+Marrow&family=Roboto:ital,wght@0,100..900;1,100..900&family=Shadows+Into+Light&family=Wellfleet&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1 id="main-title">Battleships</h1>
+    <h1 id="main-title">Beetleships</h1>
     <p class='messages' id="main-messages">Get ready to play!</p>
     <div id="grid-wrapper">
         <div class ="column hidden" id="left-grid-wrapper">
-            <h2 class="grid-title" id="left-grid-title">Player 1</h2>
-            <p class="messages" id="p1-messages"></p>
-            <div class="grid" id="left-grid"></div>
+            <h2 class="grid-title" id="left-grid-title">Player 1 gameboard</h2>
+            <div class="grid custom-cursor" id="left-grid"></div>
+             <p class="messages" id="p1-messages"></p>
+            <button class="button hidden" id="p1-button">Player 1 turn</button>
         </div>
         <div class ="column hidden" id="right-grid-wrapper">
-            <h2 class="grid-title" id="right-grid-title">Player 2</h2>
+            <h2 class="grid-title" id="right-grid-title">Player 2 gameboard</h2>
+            <div class="grid custom-cursor" id ="right-grid"></div>
             <p class="messages" id="p2-messages"></p>
-            <div class="grid" id ="right-grid"></div>
         </div>
+            <button class="button hidden" id="p2-button">Player 2 turn</button>
     </div>
-    <div class="player-buttons">
-        <button class="button hidden" id="p1-button">Player 1 turn</button>
-        <button class="button hidden" id="p2-button">Player 2 turn</button>
-    </div>
-    <div class="game-buttons">
-        <button class="button" id="start-button">Start</button>
-        <button class="button hidden" id="reset-button">Reset</button>    
+    <div id="game-buttons">
+        <button class="button game-buttons" id="start-button">Start Game</button>
+        <button class="button game-buttons hidden" id="reset-button">Reset Game</button> 
     </div>
 </body>
 </html>
