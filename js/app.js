@@ -163,32 +163,6 @@ class Ship {
         this.horizontal = false;
         };
 };      
-        // matrix (size) {
-        // if (this.horizontal) {
-                // return new Array(size).fill(1);
-                // } 
-                // else {
-                // let matrix2d = [];
-                // for (let row=0; row<size; row++) {
-                //     matrix2d.push(new Array(size).fill(0));
-                //         };    
-                // midCol = Math.floor(size/2);
-
-                // };
-        
-
-//5 types of ship that each player gets:
-// const p1Carrier = new Ship('Carrier', 5, [32,42,52,62,72]);
-// const p1Battleship= new Ship('Battleship', 4, [49,59,69,79]);
-// const p1Destroyer = new Ship('Destroyer', 3, [47,57,67]);
-// const p1Submarine = new Ship('Submarine', 3, [93,94,95]);
-// const p1PatrolBoat = new Ship('Patrol Boat', 2, [34,35]);
-
-// const p2Carrier = new Ship('Carrier', 5, [55,56,57,58,59]);
-// const p2Battleship= new Ship('Battleship', 4, [70,71,72,73]);
-// const p2Destroyer = new Ship('Destroyer', 3, [30,40,50]);
-// const p2Submarine = new Ship('Submarine', 3, [77,87,97]);
-// const p2PatrolBoat = new Ship('Patrol Boat', 2, [1,11]);
 
 const p1Carrier = new Ship('Carrier', 5);
 const p1Battleship= new Ship('Battleship', 4);
@@ -468,12 +442,9 @@ const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, gridar
                 const ifSunk = (boatsunk, boatarr, grid, boat, playershipssunk) => {
                         if (boatsunk) {
                                 boatarr.forEach((cell) => {
-//THIS IS BUGGY AND I NEED A NEW WAY OF DOING IT!!
                                 let firstDigit;
                                 let secondDigit;
                                 const testing = cell.toString(10).split('')
-                                // cell is 1 = ['1']
-                                // cell is 11 - ['1', '1']
                                         if (testing.length === 1) {
                                                 firstDigit = 0;
                                                 secondDigit = parseInt(testing[0]);
@@ -502,6 +473,7 @@ const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, gridar
                 };
         ifSunk(boatsunk, boatarr, grid , boat, playershipssunk);
 };
+
 //P1 ships sunk
 const p1ShipSunk = () => {
         let leftGridCarrierArr = [];
@@ -528,6 +500,305 @@ const p2ShipSunk = () => {
         checkSunkSquares(p2SubmarineSunk, p2Submarine.arr, rightGrid, 'Submarine', p2ShipsSunk, rightGridSubmarineArr, flatRightGrid);
         checkSunkSquares(p2PatrolBoatSunk, p2PatrolBoat.arr, rightGrid, 'Patrol Boat', p2ShipsSunk, rightGridPatrolBoatArr, flatRightGrid);
 };
+
+const randomShipBoards = () => {
+        let index = 0;
+        let rowIndex = 10;
+        let colIndex = 10;
+        let piecesPlaced = 0;
+        // const maxAttempts;
+        // let correctPlacementMaxAttempts = 0;
+        const placeShip = (ship, size, grid) => {
+                let orientation = Math.floor(Math.random() * 2);
+                //this is for vertical placement
+                if (orientation === 0) {
+                index = 0;
+                rowIndex = 10;
+                colIndex = 10;
+                let correctPlacement = false;
+                let furtherCorrectPlacement = false;
+                let finalCorrectPlacement = false;
+                // console.log(correctPlacement);
+                        while (correctPlacement === false || furtherCorrectPlacement === false || finalCorrectPlacement === false) {
+                        correctPlacement = false;
+                        furtherCorrectPlacement = false;
+                        finalCorrectPlacement = false;
+                        const generateNumber = () => {
+                                        index = Math.floor(Math.random() * 100);
+                                        console.log('index is', index)
+                                        const testing = index.toString().split('')
+                                        if (testing.length === 1) {
+                                                rowIndex = 0;
+                                                colIndex = parseInt(testing[0]);
+                                        } else {
+                                                rowIndex = parseInt(testing[0]);
+                                                colIndex = parseInt(testing[1]);
+                                        };   
+                                };
+                                generateNumber()
+                                while ((rowIndex > width - size)) {
+                                        generateNumber();
+                                };
+                                // console.log('col index', colIndex);
+                                // console.log('row index', rowIndex);
+                                const checkPlacement = (ship, size, grid) => {
+                                        let placementCount = 0;
+                                        let theRowIndex = rowIndex;
+                                        for (let cell=0; cell<size; cell++) {
+                                        // let gridCell = grid[theRowIndex][colIndex];
+                                                if (grid[theRowIndex][colIndex]) {
+                                                        placementCount = 0;
+                                                        return;
+                                                } else {
+                                                        placementCount++;
+                                                        theRowIndex++;
+                                                        if (placementCount === size) {
+                                                        correctPlacement = true;
+                                                        // console.log('correct palce', correctPlacement)
+                                                        
+                                                        const furtherCheck = (ship, size, grid) => {
+                                                        let furtherplacementCount = 0;
+                                                                let furtherRIndex = rowIndex;
+                                                                for (let cell=0; cell<size; cell++) {
+                                                                        if (colIndex === 9) {
+                                                                                if (grid[furtherRIndex][colIndex - 1]) {
+                                                                                        furtherplacementCount = 0;
+                                                                                        furtherCorrectPlacement = false;
+                                                                                        return;
+                                                                                } else {
+                                                                                        furtherRIndex++;
+                                                                                        furtherplacementCount++;
+                                                                                        if (furtherplacementCount === size) {
+                                                                                        furtherCorrectPlacement = true;
+                                                                                        };
+                                                                                };
+                                                                        } else if (colIndex === 0) {
+                                                                                if (grid[furtherRIndex][colIndex + 1]) {
+                                                                                        furtherplacementCount = 0;
+                                                                                        furtherCorrectPlacement = false;
+                                                                                        return;
+                                                                                } else {
+                                                                                        furtherRIndex++;
+                                                                                        furtherplacementCount++;
+                                                                                        if (furtherplacementCount === size) {
+                                                                                        furtherCorrectPlacement = true;
+                                                                                        };
+                                                                                };
+                                                                        } else {
+                                                                                if ((grid[furtherRIndex][colIndex + 1]) ||
+                                                                                (grid[furtherRIndex][colIndex - 1])) {
+                                                                                furtherplacementCount = 0;
+                                                                                furtherCorrectPlacement = false;
+                                                                                return;  
+                                                                                } else {
+                                                                                        furtherRIndex++
+                                                                                        furtherplacementCount++;
+                                                                                        if (furtherplacementCount === size) {
+                                                                                        furtherCorrectPlacement = true;
+                                                                                        };
+                                                                                };
+                                                                        };
+                                                                };
+                                                        };
+                                                        const finalCheck = (ship, size, grid) => {
+                                                                let finalRIndex = rowIndex;
+                                                                // for (let cell=0; cell<size; cell++) {
+                                                                        if (rowIndex + (size-1) === 9) {
+                                                                                if (grid[finalRIndex - 1][colIndex]) {
+                                                                                        return;
+                                                                                } else {
+                                                                                        finalCorrectPlacement = true;
+                                                                                        };
+                                                                        } else if (rowIndex === 0) {
+                                                                                if (grid[finalRIndex + size][colIndex]) {
+                                                                                        return;
+                                                                                } else {
+                                                                                        finalCorrectPlacement = true;
+                                                                                } 
+                                                                        } else {
+                                                                                if ((grid[finalRIndex + size][colIndex]) ||
+                                                                                (grid[finalRIndex - 1][colIndex])) {
+                                                                                return;  
+                                                                                } else {
+                                                                                        finalCorrectPlacement = true;
+                                                                                        };
+                                                                        };
+                                                        };        // console.log('placement', furtherCorrectPlacement);
+                                                furtherCheck(ship, size, grid);
+                                                finalCheck(ship, size, grid);
+                                                };
+                                        };
+                                                
+                                        };
+                                };
+                                checkPlacement(ship, size, grid);
+                                // correctPlacementMaxAttempts++;                   
+                        };
+                                        const placePiece = (ship, size, grid) => {
+                                                if (finalCorrectPlacement) {
+                                                        for (let cell=0; cell<size; cell++) {
+                                                        grid[rowIndex][colIndex] = 1;
+                                                        ship.arr[cell] = index;
+                                                        rowIndex++;
+                                                        index += 10;
+                                                        piecesPlaced++;
+                                                        // console.log('the col index is', colIndex);
+                                                        };
+                                                };
+                                        };
+                        placePiece(ship, size, grid);
+                // console.log('max attempts', correctPlacementMaxAttempts)
+                } else {
+                //this is for horizontal placement
+                index = 0;
+                rowIndex = 10;
+                colIndex = 10;
+                let correctPlacement = false;
+                let furtherCorrectPlacement = false;
+                let finalCorrectPlacement = false;
+// console.log(correctPlacement);
+                while (correctPlacement === false || furtherCorrectPlacement === false || finalCorrectPlacement === false) {
+                correctPlacement = false;
+                furtherCorrectPlacement = false;
+                finalCorrectPlacement = false;
+                                const generateNumber = () => {
+                                        index = Math.floor(Math.random() * 100);
+                                        
+                                        const testing = index.toString().split('')
+                                        if (testing.length === 1) {
+                                                rowIndex = 0;
+                                                colIndex = parseInt(testing[0]);
+                                        } else {
+                                                rowIndex = parseInt(testing[0]);
+                                                colIndex = parseInt(testing[1]);
+                                        };   
+                                };
+                        generateNumber()
+                                        console.log('index is', index)
+                                        while ((colIndex > width - size)) {
+                                                generateNumber();
+                        };
+                        console.log('col index', colIndex);
+                        console.log('row index', rowIndex);
+                                const checkPlacement = (ship, size, grid) => {
+                                        let placementCount = 0;
+                                        let columnIndex = colIndex;
+                                        for (let cell=0; cell<size; cell++) {
+                                        // let gridCell = grid[rowIndex][columnIndex];
+                                                if ((grid[rowIndex][columnIndex])) {
+                                                        placementCount = 0;
+                                                        return;
+                                                } else {
+                                                        placementCount++;
+                                                        columnIndex++;
+                                                        console.log('standard placement count', ship.name, placementCount, rowIndex, columnIndex)
+                                                        if (placementCount === size - 1) {
+                                                        correctPlacement = true;
+                                                        // console.log('correct palce', correctPlacement)
+                                                        
+                                                        const furtherCheck = (ship, size, grid) => {
+                                                        let furtherplacementCount = 0;
+                                                                let furtherCIndex = colIndex;
+                                                                for (let cell=0; cell<size; cell++) {
+                                                                        if (rowIndex === 9) {
+                                                                                if (grid[rowIndex - 1][furtherCIndex]) {
+                                                                                        furtherplacementCount = 0;
+                                                                                        furtherCorrectPlacement = false;
+                                                                                        return;
+                                                                                } else {
+                                                                                        furtherCIndex++;
+                                                                                        furtherplacementCount++;
+                                                                                        if (furtherplacementCount === size) {
+                                                                                        furtherCorrectPlacement = true;
+                                                                                        };
+                                                                                };
+                                                                        } else if (rowIndex === 0) {
+                                                                                if (grid[rowIndex + 1][furtherCIndex]) {
+                                                                                        furtherplacementCount = 0;
+                                                                                        furtherCorrectPlacement = false;
+                                                                                        return;
+                                                                                } else {
+                                                                                        furtherCIndex++;
+                                                                                        furtherplacementCount++;
+                                                                                        if (furtherplacementCount === size) {
+                                                                                        furtherCorrectPlacement = true;
+                                                                                        furtherCorrectPlacement = false;
+                                                                                        };
+                                                                                };
+                                                                        } else {
+                                                                                if ((grid[rowIndex + 1][furtherCIndex]) ||
+                                                                                (grid[rowIndex - 1][furtherCIndex])) {
+                                                                                furtherplacementCount = 0;
+                                                                                furtherCorrectPlacement = false;
+                                                                                return;  
+                                                                                } else {
+                                                                                        furtherCIndex++
+                                                                                        furtherplacementCount++;
+                                                                                        if (furtherplacementCount === size) {
+                                                                                        furtherCorrectPlacement = true;
+                                                                                        };
+                                                                                };
+                                                                        };
+                                                                console.log('further count is at', furtherplacementCount)
+                                                                };
+                                                        };
+                                                        const finalCheck = (ship, size, grid) => {
+                                                        let finalCIndex = colIndex;
+                                                                if (colIndex + (size-1) === 9) {
+                                                                        if (grid[rowIndex][finalCIndex - 1]) {
+                                                                                return;
+                                                                        } else {
+                                                                                finalCorrectPlacement = true;
+                                                                                };
+                                                                } else if (colIndex === 0) {
+                                                                        if (grid[rowIndex][finalCIndex + size]) {
+                                                                                return;
+                                                                        } else {
+                                                                                finalCorrectPlacement = true;
+                                                                        } 
+                                                                } else {
+                                                                        if ((grid[rowIndex][finalCIndex + size]) ||
+                                                                        grid[rowIndex][finalCIndex - 1]) {
+                                                                        return;  
+                                                                        } else {
+                                                                                finalCorrectPlacement = true;
+                                                                                };
+                                                                };
+                                                        };
+                                                        console.log('further placement', furtherCorrectPlacement);
+                                                        furtherCheck(ship, size, grid);
+                                                        finalCheck(ship, size, grid);
+                                                        };
+                                                };
+                                        };
+                                };
+                        checkPlacement(ship, size, grid);
+                        // correctPlacementMaxAttempts++;
+                        // console.log('here we have correct placement attempts', correctPlacementMaxAttempts)
+                                
+                        
+                };
+                // console.log('max attempts', correctPlacementMaxAttempts)
+                                const placePiece = (ship, size, grid) => {
+                                        if (finalCorrectPlacement) {
+                                                for (let cell=0; cell<size; cell++) {
+                                                grid[rowIndex][colIndex] = 1;
+                                                ship.arr[cell] = index;
+                                                colIndex++;
+                                                index++;
+                                                piecesPlaced++;
+                                                // console.log('the col index is', colIndex);
+                                                };
+                                        };
+                                };
+                placePiece(ship, size, grid); 
+        
+        };
+};
+p1Ships.forEach(ship => placeShip(ship, ship.size, leftGrid))
+p2Ships.forEach(ship => placeShip(ship, ship.size, rightGrid))
+};
+
 
 const init = () => {
         leftGrid =     [[0,0,0,0,0,0,0,0,0,0],
@@ -691,300 +962,3 @@ startButtonElement.addEventListener('click', (event) => {
 
 
 
-const randomShipBoards = () => {
-        let index = 0;
-        let rowIndex = 10;
-        let colIndex = 10;
-        let piecesPlaced = 0;
-        // const maxAttempts;
-        let correctPlacementMaxAttempts = 0;
-        const placeShip = (ship, size, grid) => {
-                let orientation = Math.floor(Math.random() * 2);
-                //this is for vertical placement
-                if (orientation === 0) {
-                index = 0;
-                rowIndex = 10;
-                colIndex = 10;
-                let correctPlacement = false;
-                let furtherCorrectPlacement = false;
-                let finalCorrectPlacement = false;
-                // console.log(correctPlacement);
-                while (correctPlacement === false || furtherCorrectPlacement === false || finalCorrectPlacement === false) {
-                correctPlacement = false;
-                furtherCorrectPlacement = false;
-                finalCorrectPlacement = false;
-                const generateNumber = () => {
-                                index = Math.floor(Math.random() * 100);
-                                console.log('index is', index)
-                                const testing = index.toString().split('')
-                                if (testing.length === 1) {
-                                        rowIndex = 0;
-                                        colIndex = parseInt(testing[0]);
-                                } else {
-                                        rowIndex = parseInt(testing[0]);
-                                        colIndex = parseInt(testing[1]);
-                                };   
-                        };
-                        generateNumber()
-                        while ((rowIndex > width - size)) {
-                                generateNumber();
-                        };
-                        console.log('col index', colIndex);
-                        console.log('row index', rowIndex);
-                        const checkPlacement = (ship, size, grid) => {
-                                let placementCount = 0;
-                                let theRowIndex = rowIndex;
-                                for (let cell=0; cell<size; cell++) {
-                                // let gridCell = grid[theRowIndex][colIndex];
-                                        if (grid[theRowIndex][colIndex]) {
-                                                placementCount = 0;
-                                                return;
-                                        } else {
-                                                placementCount++;
-                                                theRowIndex++;
-                                                if (placementCount === size) {
-                                                correctPlacement = true;
-                                                // console.log('correct palce', correctPlacement)
-                                                
-                                                const furtherCheck = (ship, size, grid) => {
-                                                let furtherplacementCount = 0;
-                                                        let furtherRIndex = rowIndex;
-                                                        for (let cell=0; cell<size; cell++) {
-                                                                if (colIndex === 9) {
-                                                                        if (grid[furtherRIndex][colIndex - 1]) {
-                                                                                furtherplacementCount = 0;
-                                                                                furtherCorrectPlacement = false;
-                                                                                return;
-                                                                        } else {
-                                                                                furtherRIndex++;
-                                                                                furtherplacementCount++;
-                                                                                if (furtherplacementCount === size) {
-                                                                                furtherCorrectPlacement = true;
-                                                                                };
-                                                                        };
-                                                                } else if (colIndex === 0) {
-                                                                        if (grid[furtherRIndex][colIndex + 1]) {
-                                                                                furtherplacementCount = 0;
-                                                                                furtherCorrectPlacement = false;
-                                                                                return;
-                                                                        } else {
-                                                                                furtherRIndex++;
-                                                                                furtherplacementCount++;
-                                                                                if (furtherplacementCount === size) {
-                                                                                furtherCorrectPlacement = true;
-                                                                                };
-                                                                        };
-                                                                } else {
-                                                                        if ((grid[furtherRIndex][colIndex + 1]) ||
-                                                                        (grid[furtherRIndex][colIndex - 1])) {
-                                                                              furtherplacementCount = 0;
-                                                                              furtherCorrectPlacement = false;
-                                                                              return;  
-                                                                        } else {
-                                                                                furtherRIndex++
-                                                                                furtherplacementCount++;
-                                                                                if (furtherplacementCount === size) {
-                                                                                furtherCorrectPlacement = true;
-                                                                                };
-                                                                        };
-                                                                };
-                                                        };
-                                                };
-                                                const finalCheck = (ship, size, grid) => {
-                                                        let finalRIndex = rowIndex;
-                                                        // for (let cell=0; cell<size; cell++) {
-                                                                if (rowIndex + (size-1) === 9) {
-                                                                        if (grid[finalRIndex - 1][colIndex]) {
-                                                                                return;
-                                                                        } else {
-                                                                                finalCorrectPlacement = true;
-                                                                                };
-                                                                } else if (rowIndex === 0) {
-                                                                        if (grid[finalRIndex + size][colIndex]) {
-                                                                                return;
-                                                                        } else {
-                                                                                finalCorrectPlacement = true;
-                                                                        } 
-                                                                } else {
-                                                                        if ((grid[finalRIndex + size][colIndex]) ||
-                                                                        (grid[finalRIndex - 1][colIndex])) {
-                                                                        return;  
-                                                                        } else {
-                                                                                finalCorrectPlacement = true;
-                                                                                };
-                                                                };
-                                                };        // console.log('placement', furtherCorrectPlacement);
-                                        furtherCheck(ship, size, grid);
-                                        finalCheck(ship, size, grid);
-                                        };
-                                };
-                                        
-                                };
-                        };
-                        checkPlacement(ship, size, grid);
-                        correctPlacementMaxAttempts++;                   
-                };
-                                const placePiece = (ship, size, grid) => {
-                                        if (finalCorrectPlacement) {
-                                                for (let cell=0; cell<size; cell++) {
-                                                grid[rowIndex][colIndex] = 1;
-                                                ship.arr[cell] = index;
-                                                rowIndex++;
-                                                index += 10;
-                                                piecesPlaced++;
-                                                // console.log('the col index is', colIndex);
-                                                };
-                                        };
-                                };
-                placePiece(ship, size, grid);
-                // console.log('max attempts', correctPlacementMaxAttempts)
-                } else {
-                //this is for horizontal placement
-                index = 0;
-                rowIndex = 10;
-                colIndex = 10;
-                let correctPlacement = false;
-                let furtherCorrectPlacement = false;
-                let finalCorrectPlacement = false;
-// console.log(correctPlacement);
-                while (correctPlacement === false || furtherCorrectPlacement === false || finalCorrectPlacement === false) {
-                correctPlacement = false;
-                furtherCorrectPlacement = false;
-                finalCorrectPlacement = false;
-                                                                const generateNumber = () => {
-                                                                        index = Math.floor(Math.random() * 100);
-                                                                        
-                                                                        const testing = index.toString().split('')
-                                                                        if (testing.length === 1) {
-                                                                                rowIndex = 0;
-                                                                                colIndex = parseInt(testing[0]);
-                                                                        } else {
-                                                                                rowIndex = parseInt(testing[0]);
-                                                                                colIndex = parseInt(testing[1]);
-                                                                        };   
-                                                                };
-                        generateNumber()
-                                        console.log('index is', index)
-                                        while ((colIndex > width - size)) {
-                                                generateNumber();
-                        };
-                        console.log('col index', colIndex);
-                        console.log('row index', rowIndex);
-                                const checkPlacement = (ship, size, grid) => {
-                                        let placementCount = 0;
-                                        let columnIndex = colIndex;
-                                        for (let cell=0; cell<size; cell++) {
-                                        // let gridCell = grid[rowIndex][columnIndex];
-                                                if ((grid[rowIndex][columnIndex])) {
-                                                        placementCount = 0;
-                                                        return;
-                                                } else {
-                                                        placementCount++;
-                                                        columnIndex++;
-                                                        console.log('standard placement count', ship.name, placementCount, rowIndex, columnIndex)
-                                                        if (placementCount === size - 1) {
-                                                        correctPlacement = true;
-                                                        // console.log('correct palce', correctPlacement)
-                                                        
-                                                        const furtherCheck = (ship, size, grid) => {
-                                                        let furtherplacementCount = 0;
-                                                                let furtherCIndex = colIndex;
-                                                                for (let cell=0; cell<size; cell++) {
-                                                                        if (rowIndex === 9) {
-                                                                                if (grid[rowIndex - 1][furtherCIndex]) {
-                                                                                        furtherplacementCount = 0;
-                                                                                        furtherCorrectPlacement = false;
-                                                                                        return;
-                                                                                } else {
-                                                                                        furtherCIndex++;
-                                                                                        furtherplacementCount++;
-                                                                                        if (furtherplacementCount === size) {
-                                                                                        furtherCorrectPlacement = true;
-                                                                                        };
-                                                                                };
-                                                                        } else if (rowIndex === 0) {
-                                                                                if (grid[rowIndex + 1][furtherCIndex]) {
-                                                                                        furtherplacementCount = 0;
-                                                                                        furtherCorrectPlacement = false;
-                                                                                        return;
-                                                                                } else {
-                                                                                        furtherCIndex++;
-                                                                                        furtherplacementCount++;
-                                                                                        if (furtherplacementCount === size) {
-                                                                                        furtherCorrectPlacement = true;
-                                                                                        furtherCorrectPlacement = false;
-                                                                                        };
-                                                                                };
-                                                                        } else {
-                                                                                if ((grid[rowIndex + 1][furtherCIndex]) ||
-                                                                                (grid[rowIndex - 1][furtherCIndex])) {
-                                                                                furtherplacementCount = 0;
-                                                                                furtherCorrectPlacement = false;
-                                                                                return;  
-                                                                                } else {
-                                                                                        furtherCIndex++
-                                                                                        furtherplacementCount++;
-                                                                                        if (furtherplacementCount === size) {
-                                                                                        furtherCorrectPlacement = true;
-                                                                                        };
-                                                                                };
-                                                                        };
-                                                                console.log('further count is at', furtherplacementCount)
-                                                                };
-                                                        };
-                                                        const finalCheck = (ship, size, grid) => {
-                                                        let finalCIndex = colIndex;
-                                                                if (colIndex + (size-1) === 9) {
-                                                                        if (grid[rowIndex][finalCIndex - 1]) {
-                                                                                return;
-                                                                        } else {
-                                                                                finalCorrectPlacement = true;
-                                                                                };
-                                                                } else if (colIndex === 0) {
-                                                                        if (grid[rowIndex][finalCIndex + size]) {
-                                                                                return;
-                                                                        } else {
-                                                                                finalCorrectPlacement = true;
-                                                                        } 
-                                                                } else {
-                                                                        if ((grid[rowIndex][finalCIndex + size]) ||
-                                                                        grid[rowIndex][finalCIndex - 1]) {
-                                                                        return;  
-                                                                        } else {
-                                                                                finalCorrectPlacement = true;
-                                                                                };
-                                                                };
-                                                        };
-                                                        console.log('further placement', furtherCorrectPlacement);
-                                                        furtherCheck(ship, size, grid);
-                                                        finalCheck(ship, size, grid);
-                                                        };
-                                                };
-                                        };
-                                };
-                        checkPlacement(ship, size, grid);
-                        correctPlacementMaxAttempts++;
-                        console.log('here we have correct placement attempts', correctPlacementMaxAttempts)
-                                
-                        
-                };
-                // console.log('max attempts', correctPlacementMaxAttempts)
-                                const placePiece = (ship, size, grid) => {
-                                        if (finalCorrectPlacement) {
-                                                for (let cell=0; cell<size; cell++) {
-                                                grid[rowIndex][colIndex] = 1;
-                                                ship.arr[cell] = index;
-                                                colIndex++;
-                                                index++;
-                                                piecesPlaced++;
-                                                // console.log('the col index is', colIndex);
-                                                };
-                                        };
-                                };
-                placePiece(ship, size, grid); 
-        
-        };
-};
-p1Ships.forEach(ship => placeShip(ship, ship.size, leftGrid))
-p2Ships.forEach(ship => placeShip(ship, ship.size, rightGrid))
-};
