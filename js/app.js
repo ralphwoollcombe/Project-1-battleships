@@ -303,6 +303,7 @@ const updateLeftBoard = () => {
                         flatLeftGrid[index] = 4;
                         let wreck = document.createElement('img');
                         wreck.src = "./assets/shipwreck.png";
+                        wreck.classList.add('shipwreck');
                         cellEl.appendChild(wreck); 
                     } else {
                         cellEl.classList.add('not-ship');
@@ -335,6 +336,7 @@ const updateRightBoard = () => {
                        flatRightGrid[index] = 4;
                         let wreck = document.createElement('img');
                         wreck.src = "./assets/shipwreck.png";
+                        wreck.classList.add('shipwreck');
                         cellEl.appendChild(wreck); 
                     } else {
                         cellEl.classList.add('not-ship');
@@ -508,6 +510,7 @@ const randomShipBoards = () => {
                 let orientation = Math.floor(Math.random() * 2);
                 //this is for vertical placement
                 if (orientation === 0) {
+                ship.horizontal = false;
                 index = 0;
                 rowIndex = 10;
                 colIndex = 10;
@@ -644,6 +647,7 @@ const randomShipBoards = () => {
                         placePiece(ship, size, grid);
                 } else {
                 //this is for horizontal placement
+                ship.horizontal = true;
                 index = 0;
                 rowIndex = 10;
                 colIndex = 10;
@@ -786,25 +790,25 @@ const randomShipBoards = () => {
                                         };
                                 };
                 placePiece(ship, size, grid); 
-        
         };
 };
 p1Ships.forEach(ship => placeShip(ship, ship.size, leftGrid))
 p2Ships.forEach(ship => placeShip(ship, ship.size, rightGrid))
 };
-
 const resetGame = () => {
         rightCellEls.forEach(cell => {
                 cell.classList.remove('ship');
                 cell.classList.remove('not-ship');
                 cell.textContent = '';
                 cell.classList.remove('covered-board');
+                cell.classList.remove('shipwreck');
         });
         leftCellEls.forEach(cell => {
                 cell.classList.remove('ship')
                 cell.classList.remove('not-ship');
                 cell.textContent = ''
                 cell.classList.remove('covered-board');
+                cell.classList.remove('shipwreck');
         });
         p2ButtonElement.classList.add('hidden');
         p1ButtonElement.classList.add('hidden');
@@ -835,8 +839,7 @@ const init = () => {
                         [0,0,0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0,0,0]]
-        randomShipBoards();
-        // console.log(leftGrid)
+        randomShipBoards();     
         p1Hits = 0;
         p2Hits = 0;
         p1ShipsSunk = 0;
@@ -924,14 +927,11 @@ resetButtonElement.addEventListener('click', (event) => {
 /*------------------------------- Page Load ------------------------------*/
 
 //TO DO:
-//1. Make it so that the reset button is functional and sets up the game at the beginning again
-        //This involves reseting the grids to zeros.
-        //Making all the div sections that relate also equal zero again.
-        //removing all img sections.
-        //setting all counters to 0 or false.
-        //message content back to starting text.
-        //remove all .ship and not ship classes to div elements.
-        //
+//1. Position Player 1 and Player 2 buttons.
+//2. Position satert and reset buttons.
+//3. Style the board so it looks cute - do I want to make it using bugs??
+//4. 
+
 
 
 
