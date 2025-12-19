@@ -5,7 +5,7 @@ GAME NAME: Battleships (Beetleships)
 WHY: I chose this game because I wanted to challenge myself by choosing a game which requires lots of conditional loops. I also knew that there were lots of level options with this game. Battleships is a fun game, but where's the less macho, cute version, if I had this explorer version when I was younger I'd have played the game a lot more!
 
 GETTING STARTED:
-Play the game: [Game Link HERE]
+Play the game: https://github.com/ralphwoollcombe/Project-1-battleships
 Instructions: Click the “How to play” button on the site to view the rules.
 Quick overview of gameplay:
     Each player has a 10x10 grid with hidden bugs.
