@@ -875,11 +875,3 @@ instructionsButtonElement.addEventListener('click', () => {
         instructionsElement.classList.toggle('hidden');
 })
 
-
-/*------------------------------- Page Load ------------------------------*/
-
-//TO DO:
-//4. Delete all dead code.
-//6. Write out a README for the game.
-//7. add a cover to the board when buttons come up.
-

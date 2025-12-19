@@ -87,7 +87,7 @@ li {
 }
 
 .player-messages {
-    background-color: rgba(150, 63, 1, 0.9);
+    background-color: rgba(150, 63, 1, 1);
     padding: 20px 10px;
     border-radius: 15px;
     border: 2px solid rgb(106, 47, 8);
@@ -154,7 +154,7 @@ li {
 .grid-title {
     display: flex;
     flex-wrap: wrap;
-    background-color: rgba(150, 63, 1, 0.9);
+    background-color: rgba(150, 63, 1, 1);
     padding: 10px 10px;
     border-radius: 15px;
     border: 2px solid rgb(106, 47, 8);
