@@ -10,43 +10,8 @@
 //As a user I want to it to become clear visually when I've sunk an entire ship.
 //As a user I want to see once I've sunk all the ships and won the game.
 //As a user I want to be able to start a new game.
-
-//ADDITIONAL ELEMENTS
-//Once I hit a ship I want to be given multiple turns until I miss - I want the message to reflect this.
 //I want to be able to reset the game and for a new combination appear on the grid.
-//I want to be able to place my own ships on the game board.
 
-
-
-//PLAYER VS COMPUTER USER STORIES
-//As Player 1 want to see A board appear with two square grids and a button saying play game.
-        //I also want to see a istructions, a title.
-//As a user I want after I click start I want to see my grid with my ships in position on the left grid.
-//As a user I want to see a message telling me to take my turn above the right grid and when I hover my mouse over the boxes it shows an X to signify a possible selection.
-//As a user I was to click on a box and for the box I've clicked on to show either a hit or a miss.
-//As a user I then want the computer to randomly choose a box on my grid.
-//As a user I want to see the computer go for an adjacent square if they got a hit and to continue to do so until the ship is sunk.
-
-
-//BOATS:
-//     Carrier     - 5 
-//     Battleship  - 4 
-//     Destroyer   - 3 
-//     Submarine   - 3 
-//     Patrol Boat - 2 
-
-
-// submarine {
-// horizontal ship: 
-// [[0],[0],[0]],
-// [[1],[1],[1]],
-// [[0],[0],[0]]
-
-// vertical ship:
-// [[0],[1],[0]],
-// [[0],[1],[0]],
-// [[0],[1],[0]]
-// }
 
 // /*--------------------------------- Pseudo ---------------------------------*/
 
@@ -69,28 +34,6 @@
 //Come up with an event listeners for the Player 1 turn and Player 2 turn buttons.
 //Come up with event listeners for the start and reset buttons.
 
-//REFACTORISATIONS
-//Come up with a loop which positions ships randomly on the board. This will involve no overlap of ships including spaces around the ships. Also inlcude randomised orientation of the ships.
-//
-
-//Player vs computer pseudocode:
-//.....
-
-//QUESTIONS
-//1. How would I create a ship covering 3 spaces with an image of a ship - but so that each section of the ship was a child of the space it occupied. Should I be treating the ships as whole ships or as spaces
-//2. How can I build a randomized game board each time a new game is reset - surely this is as hard as playing against the computer.
-//3. Should I be building the grids in html or should I create it in JS completely.
-
-//MAIN CHALLENGES:
-//1. Working out how to work with newly created HTML elements in JS. 
-// And then how to cache them in the DOM after creating them. They are different to the tracked variable and standard cached elements as they need to be declared in global scope, 
-// but then properly cached in function scope after they've been created.
-//2. Working out the inheritance ordering in CSS was really hard. What I eventually realised is that creating a CSS block with multiple classes is more specific so wins on inheritance than a block for just a single class.
-//After this, if the blocks have the same specificity then its the lower block that wins on inheritance, hence why .cell.ship.covered-board was lower than the other sections.
-//3. Another classic thing that I keep finding difficult is selecting multiple elements but the treating them as a singular variable not an array. 
-// I declared the leftShipEls and rightShipEls and even though they are literally puralised I couldn't work out for ages why my IF statement wasn't working! Turns out I needed to iterate through them duh!
-//Similarly to the leftCellEls & rightCellEls arrays I have now declared them as arrays which helps to remember they are arrays.
-//4.
 
 /*-------------------------------- Variables --------------------------------*/
 
@@ -179,7 +122,6 @@ const p2PatrolBoat = new Ship('Ladybird', 2);
 const p1Ships = [p1Carrier, p1Battleship, p1Destroyer, p1Submarine, p1PatrolBoat];
 const p2Ships = [p2Carrier, p2Battleship, p2Destroyer, p2Submarine, p2PatrolBoat];
 
-// console.log(p2PatrolBoat.matrix);
 //Used to create both the left and the right grid in the game.
 const createGrid = () => {
         for (let row=0; row< height; row++) {
@@ -214,7 +156,6 @@ const hitTally = () => {
                                 };
                         });
         }); p1Hits = tally
-        // console.log(p1Hits)
         };
         const p2HitTally = () => {
                 let tally = 0;
@@ -225,7 +166,6 @@ const hitTally = () => {
                                 };
                         });
         }); p2Hits = tally
-        // console.log(p2Hits)
         };
         p1HitTally();
         p2HitTally();
@@ -258,7 +198,6 @@ const declareWinner = () => {
                 p2MessageElement.textContent = '';
                 mainMessegeElement.textContent = 'Congratulations player 1! You have won the game!'
         } else if (winner === 'p2') {
-                //message to read "Player 2 has won the game!"
                 p1ButtonElement.classList.add('hidden');
                 p2ButtonElement.classList.add('hidden');
                 leftShipEls.forEach(cell => {
@@ -278,8 +217,6 @@ const declareWinner = () => {
 const updateBoard = () => {
         updateLeftBoard();
         updateRightBoard();
-        // console.log(rightCellEls)
-        // console.log(leftCellEls)
 };
 
 const updateLeftBoard = () => {
@@ -327,16 +264,16 @@ const updateLeftBoard = () => {
                         cellEl.classList.add('not-ship');
                         cellEl.textContent = '';
                     };
-                 };
+                };
         };
 };
 
 //Key for the below: 0 is a blank square, 1 is an untouched ship, 2 is a hit ship, 3 is a missed square.
 const updateRightBoard = () => {
         for (let row=0; row<height; row++) {
-                 for (let col=0; col<width; col++) {
-        const index = (row * 10) + col;
-        const cellEl = rightCellEls[index];
+                for (let col=0; col<width; col++) {
+                const index = (row * 10) + col;
+                const cellEl = rightCellEls[index];
                     if (rightGrid[row][col] === 1) {
                         cellEl.classList.add('ship');
                         flatRightGrid[index] = 1;
@@ -371,7 +308,7 @@ const updateRightBoard = () => {
                         cellEl.classList.add('not-ship');
                         cellEl.textContent = '';
                     };
-                 };
+                };
         };
 };
 
@@ -380,93 +317,86 @@ const switchPlayer = () => {
         leftShipEls = document.querySelectorAll('.left-cell.ship');
         rightShipEls = document.querySelectorAll('.right-cell.ship');
         if (turn === 'p1') {
-        leftShipEls.forEach(cell => {
+                leftShipEls.forEach(cell => {
                 cell.classList.add('covered-board')});
-        turn = '';
-        p2ButtonElement.classList.remove('hidden');
+                turn = '';
+                p2ButtonElement.classList.remove('hidden');
         } else if (turn === 'p2') {
-        rightShipEls.forEach(cell => {
+                rightShipEls.forEach(cell => {
                 cell.classList.add('covered-board')});
-        turn = '';
-        p1ButtonElement.classList.remove('hidden');
+                turn = '';
+                p1ButtonElement.classList.remove('hidden');
         };
 };
 
-
-// const updateMessage = () => {};
-
 const handleLeftClick = (event) => {
-        cellRow = event.target.id[1];
-        cellCol = event.target.id[2];
-     if (turn === 'p1') {return}
-     else if (turn === 'p2') {
-     if (leftGrid[cellRow][cellCol] === 0) {
-        leftGrid[cellRow][cellCol] = 3;
-        mainMessegeElement.textContent = ``;
-        p2MessageElement.textContent = 'Miss!'
-        leftGridElement.classList.remove('custom-cursor');
-        rightGridElement.classList.remove('custom-cursor');
-        render()
-        p1ShipSunk();
-        p2ShipSunk();
-        hitTally();
-        switchPlayer();
-        winningShot();
-     } else if (leftGrid[cellRow][cellCol] === 1) {
-        leftGrid[cellRow][cellCol] = 2;
-        mainMessegeElement.textContent = ``;
-        p2MessageElement.textContent = 'Hit!'
-        leftGridElement.classList.remove('custom-cursor');
-        rightGridElement.classList.remove('custom-cursor');
-        render();
-        p1ShipSunk();
-        p2ShipSunk();
-        hitTally();
-        switchPlayer();
-        winningShot();
-     } else {return};
-};
+cellRow = event.target.id[1];
+cellCol = event.target.id[2];
+        if (turn === 'p1') {return}
+        else if (turn === 'p2') {
+                if (leftGrid[cellRow][cellCol] === 0) {
+                        leftGrid[cellRow][cellCol] = 3;
+                        mainMessegeElement.textContent = ``;
+                        p2MessageElement.textContent = 'Miss!'
+                        leftGridElement.classList.remove('custom-cursor');
+                        rightGridElement.classList.remove('custom-cursor');
+                        render()
+                        p1ShipSunk();
+                        p2ShipSunk();
+                        hitTally();
+                        switchPlayer();
+                        winningShot();
+                } else if (leftGrid[cellRow][cellCol] === 1) {
+                        leftGrid[cellRow][cellCol] = 2;
+                        mainMessegeElement.textContent = ``;
+                        p2MessageElement.textContent = 'Hit!'
+                        leftGridElement.classList.remove('custom-cursor');
+                        rightGridElement.classList.remove('custom-cursor');
+                        render();
+                        p1ShipSunk();
+                        p2ShipSunk();
+                        hitTally();
+                        switchPlayer();
+                        winningShot();
+                } else {return};
+        };
 };
 
 const handleRightClick = (event) => {
-        cellRow = event.target.id[1];
-        cellCol = event.target.id[2];
-        // console.log(event.target.id)
-     if (turn === 'p2') {return}
-     else if (turn === 'p1') {
-     if (rightGrid[cellRow][cellCol] === 0) {
-        rightGrid[cellRow][cellCol] = 3;
-        mainMessegeElement.textContent = ``;
-        p1MessageElement.textContent = 'Miss!';
-        leftGridElement.classList.remove('custom-cursor');
-        rightGridElement.classList.remove('custom-cursor');
-        render();
-        p1ShipSunk();
-        p2ShipSunk();
-        hitTally();
-        switchPlayer();
-        winningShot();
-        // console.log(leftGrid);
-        // console.log(rightGrid);
-     } else if (rightGrid[cellRow][cellCol] === 1) {
-        rightGrid[cellRow][cellCol] = 2;
-        mainMessegeElement.textContent = ``;
-        p1MessageElement.textContent = 'Hit!';
-        leftGridElement.classList.remove('custom-cursor');
-        rightGridElement.classList.remove('custom-cursor');
-        render();
-        p1ShipSunk();
-        p2ShipSunk();
-        hitTally();
-        switchPlayer();
-        winningShot();
-     } else {return};
-};
+cellRow = event.target.id[1];
+cellCol = event.target.id[2];
+        if (turn === 'p2') {return}
+        else if (turn === 'p1') {
+                if (rightGrid[cellRow][cellCol] === 0) {
+                        rightGrid[cellRow][cellCol] = 3;
+                        mainMessegeElement.textContent = ``;
+                        p1MessageElement.textContent = 'Miss!';
+                        leftGridElement.classList.remove('custom-cursor');
+                        rightGridElement.classList.remove('custom-cursor');
+                        render();
+                        p1ShipSunk();
+                        p2ShipSunk();
+                        hitTally();
+                        switchPlayer();
+                        winningShot();
+                } else if (rightGrid[cellRow][cellCol] === 1) {
+                        rightGrid[cellRow][cellCol] = 2;
+                        mainMessegeElement.textContent = ``;
+                        p1MessageElement.textContent = 'Hit!';
+                        leftGridElement.classList.remove('custom-cursor');
+                        rightGridElement.classList.remove('custom-cursor');
+                        render();
+                        p1ShipSunk();
+                        p2ShipSunk();
+                        hitTally();
+                        switchPlayer();
+                        winningShot();
+                } else {return};
+        };
 };
 
 const render = () => {
         updateBoard();
-        // updateMessage();
 };
 
 //SHIP SUNK FUNCTIONS:
@@ -494,25 +424,17 @@ const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, boardC
                                 });
                                 if (turn === 'p1') {
                                         p2ShipsSunk += 1;
-                                        // console.log('there are', p2ShipsSunk)
                                         p1MessageElement.textContent = `You found their ${boat}!`;
-                                        // console.log(`P2 ${boat} sunk!`);
                                 } else if (turn === 'p2') {
                                         p1ShipsSunk += 1;
-                                        // console.log('there are', p2ShipsSunk)
                                         p2MessageElement.textContent = `You found their ${boat}!`;
-                                        // console.log(`P2 ${boat} sunk!`);
                                 };
-                        // console.log('there are', p1ShipsSunk)
-                        // console.log('there are', p2ShipsSunk)
-                        // } else {p2MessageElement.textcontent = `P1's ${boat} sunk!`}
                         render();
                         };
                 };
         ifSunk(boatsunk, boatarr, grid , boat, playershipssunk, boardCells);
 };
 
-//P1 ships sunk
 const p1ShipSunk = () => {
         let leftGridCarrierArr = [];
         let leftGridBattleshipArr = [];
@@ -561,7 +483,6 @@ const randomShipBoards = () => {
                         finalCorrectPlacement = false;
                         const generateNumber = () => {
                                         index = Math.floor(Math.random() * 100);
-                                        // console.log('index is', index)
                                         const testing = index.toString().split('')
                                         if (testing.length === 1) {
                                                 rowIndex = 0;
@@ -575,13 +496,10 @@ const randomShipBoards = () => {
                                 while ((rowIndex > width - size)) {
                                         generateNumber();
                                 };
-                                // console.log('col index', colIndex);
-                                // console.log('row index', rowIndex);
                                 const checkPlacement = (ship, size, grid) => {
                                         let placementCount = 0;
                                         let theRowIndex = rowIndex;
                                         for (let cell=0; cell<size; cell++) {
-                                        // let gridCell = grid[theRowIndex][colIndex];
                                                 if (grid[theRowIndex][colIndex]) {
                                                         placementCount = 0;
                                                         return;
@@ -589,9 +507,7 @@ const randomShipBoards = () => {
                                                         placementCount++;
                                                         theRowIndex++;
                                                         if (placementCount === size) {
-                                                        correctPlacement = true;
-                                                        // console.log('correct palce', correctPlacement)
-                                                        
+                                                        correctPlacement = true;                                                        
                                                         const furtherCheck = (ship, size, grid) => {
                                                         let furtherplacementCount = 0;
                                                                 let furtherRIndex = rowIndex;
@@ -638,7 +554,6 @@ const randomShipBoards = () => {
                                                         };
                                                         const finalCheck = (ship, size, grid) => {
                                                                 let finalRIndex = rowIndex;
-                                                                // for (let cell=0; cell<size; cell++) {
                                                                         if (rowIndex + (size-1) === 9) {
                                                                                 if (grid[finalRIndex - 1][colIndex]) {
                                                                                         return;
@@ -659,7 +574,7 @@ const randomShipBoards = () => {
                                                                                         finalCorrectPlacement = true;
                                                                                         };
                                                                         };
-                                                        };        // console.log('placement', furtherCorrectPlacement);
+                                                        };        
                                                 furtherCheck(ship, size, grid);
                                                 finalCheck(ship, size, grid);
                                                 };
@@ -668,7 +583,6 @@ const randomShipBoards = () => {
                                         };
                                 };
                                 checkPlacement(ship, size, grid);
-                                // correctPlacementMaxAttempts++;                   
                         };
                                         const placePiece = (ship, size, grid) => {
                                                 if (finalCorrectPlacement) {
@@ -678,7 +592,6 @@ const randomShipBoards = () => {
                                                         rowIndex++;
                                                         index += 10;
                                                         piecesPlaced++;
-                                                        // console.log('the col index is', colIndex);
                                                         };
                                                 };
                                         };
@@ -692,14 +605,12 @@ const randomShipBoards = () => {
                 let correctPlacement = false;
                 let furtherCorrectPlacement = false;
                 let finalCorrectPlacement = false;
-// console.log(correctPlacement);
                 while (correctPlacement === false || furtherCorrectPlacement === false || finalCorrectPlacement === false) {
                 correctPlacement = false;
                 furtherCorrectPlacement = false;
                 finalCorrectPlacement = false;
                                 const generateNumber = () => {
-                                        index = Math.floor(Math.random() * 100);
-                                        
+                                        index = Math.floor(Math.random() * 100); 
                                         const testing = index.toString().split('')
                                         if (testing.length === 1) {
                                                 rowIndex = 0;
@@ -710,28 +621,21 @@ const randomShipBoards = () => {
                                         };   
                                 };
                         generateNumber()
-                                        // console.log('index is', index)
                                         while ((colIndex > width - size)) {
                                                 generateNumber();
                         };
-                        // console.log('col index', colIndex);
-                        // console.log('row index', rowIndex);
                                 const checkPlacement = (ship, size, grid) => {
                                         let placementCount = 0;
                                         let columnIndex = colIndex;
                                         for (let cell=0; cell<size; cell++) {
-                                        // let gridCell = grid[rowIndex][columnIndex];
                                                 if ((grid[rowIndex][columnIndex])) {
                                                         placementCount = 0;
                                                         return;
                                                 } else {
                                                         placementCount++;
                                                         columnIndex++;
-                                                        // console.log('standard placement count', ship.name, placementCount, rowIndex, columnIndex)
                                                         if (placementCount === size - 1) {
                                                         correctPlacement = true;
-                                                        // console.log('correct palce', correctPlacement)
-                                                        
                                                         const furtherCheck = (ship, size, grid) => {
                                                         let furtherplacementCount = 0;
                                                                 let furtherCIndex = colIndex;
@@ -775,7 +679,6 @@ const randomShipBoards = () => {
                                                                                         };
                                                                                 };
                                                                         };
-                                                                // console.log('further count is at', furtherplacementCount)
                                                                 };
                                                         };
                                                         const finalCheck = (ship, size, grid) => {
@@ -801,20 +704,14 @@ const randomShipBoards = () => {
                                                                                 };
                                                                 };
                                                         };
-                                                        // console.log('further placement', furtherCorrectPlacement);
                                                         furtherCheck(ship, size, grid);
                                                         finalCheck(ship, size, grid);
                                                         };
                                                 };
                                         };
                                 };
-                        checkPlacement(ship, size, grid);
-                        // correctPlacementMaxAttempts++;
-                        // console.log('here we have correct placement attempts', correctPlacementMaxAttempts)
-                                
-                        
+                        checkPlacement(ship, size, grid);                                     
                 };
-                // console.log('max attempts', correctPlacementMaxAttempts)
                                 const placePiece = (ship, size, grid) => {
                                         if (finalCorrectPlacement) {
                                                 for (let cell=0; cell<size; cell++) {
@@ -823,7 +720,6 @@ const randomShipBoards = () => {
                                                 colIndex++;
                                                 index++;
                                                 piecesPlaced++;
-                                                // console.log('the col index is', colIndex);
                                                 };
                                         };
                                 };
@@ -832,10 +728,6 @@ const randomShipBoards = () => {
 };
 p1Ships.forEach(ship => placeShip(ship, ship.size, leftGrid))
 p2Ships.forEach(ship => placeShip(ship, ship.size, rightGrid))
-};
-
-const markShips = () => {
-        
 };
 
 const resetGame = () => {
@@ -870,10 +762,6 @@ const resetGame = () => {
         leftGridElement.classList.remove('custom-cursor');
         p2ButtonElement.classList.add('hidden');
         p1ButtonElement.classList.add('hidden');
-        // console.log(rightCellEls);
-        // console.log(leftCellEls);
-        // console.log(p1BattleshipSunk);
-        // console.log()
 };
 
 const init = () => {
@@ -918,7 +806,6 @@ const init = () => {
 const createDomElements = () => {
         leftCellEls = document.querySelectorAll('#left-grid div');
         rightCellEls = document.querySelectorAll('#right-grid div');
-        // render();
         columnElements.forEach(col => {col.classList.remove('hidden')})
         leftCellEls.forEach(cell => {cell.addEventListener('click', handleLeftClick)
         });
@@ -993,7 +880,6 @@ instructionsButtonElement.addEventListener('click', () => {
 
 //TO DO:
 //4. Delete all dead code.
-//5. Give all imgs an alt text.
 //6. Write out a README for the game.
 //7. add a cover to the board when buttons come up.
 
