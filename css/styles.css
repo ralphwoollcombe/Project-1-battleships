@@ -5,7 +5,7 @@ body {
     text-align: center;
     margin: 0;
     background-color: rgba(80, 49, 12, 0.575); 
-     background-image: url("./Assets/bugs/beetleshell.jpg");
+     background-image: url("../Assets/bugs/beetleshell.jpg");
     /* filter:blur(8px); */
     background-size: cover; 
 }
@@ -131,7 +131,7 @@ li {
     /* height: 300px; */
     width: 400px;
     position: relative;
-    background-image: url("./Assets/jungle.png");
+    background-image: url("../Assets/jungle.png");
     background-size: cover;
     border-radius: 15px;
     border: 10px solid rgba(184, 95, 23, 0.678);
@@ -256,7 +256,7 @@ li {
 }
 
 .custom-cursor {
-    cursor: url("./Assets/magnifying-glass.png") 16 16, auto;
+    cursor: url("../Assets/magnifying-glass.png") 16 16, auto;
     /* cursor: pointer; */
 }
 
