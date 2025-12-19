@@ -132,6 +132,8 @@ const mainMessegeElement = document.querySelector('#main-messages');
 const p1MessageElement = document.querySelector('#p1-messages');
 const p2MessageElement = document.querySelector('#p2-messages');
 const columnElements = document.querySelectorAll('.column')
+const instructionsElement = document.querySelector('#instructions-section');
+const instructionsButtonElement = document.querySelector('#instructions-button');
 let leftCellEls = [];
 let rightCellEls = [];
 let leftShipEls = [];
@@ -252,7 +254,7 @@ const declareWinner = () => {
                         cell.classList.remove('covered-board');
                 });
                 leftGridElement.classList.remove('custom-cursor');
-                p1MessageElement.textContent = '';
+                p1MessageElement.textContent = 'You won!';
                 p2MessageElement.textContent = '';
                 mainMessegeElement.textContent = 'Congratulations player 1! You have won the game!'
         } else if (winner === 'p2') {
@@ -268,7 +270,7 @@ const declareWinner = () => {
                 });
                 leftGridElement.classList.remove('custom-cursor');
                 p1MessageElement.textContent = '';
-                p2MessageElement.textContent = '';
+                p2MessageElement.textContent = 'You won!';
                 mainMessegeElement.textContent = 'Congratulations player 2! You have won the game!'
         };
 };
@@ -493,12 +495,12 @@ const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, boardC
                                 if (turn === 'p1') {
                                         p2ShipsSunk += 1;
                                         // console.log('there are', p2ShipsSunk)
-                                        p1MessageElement.textContent = `You found Player 2's ${boat}!`;
+                                        p1MessageElement.textContent = `You found their ${boat}!`;
                                         // console.log(`P2 ${boat} sunk!`);
                                 } else if (turn === 'p2') {
                                         p1ShipsSunk += 1;
                                         // console.log('there are', p2ShipsSunk)
-                                        p2MessageElement.textContent = `You found Player 1's ${boat}!`;
+                                        p2MessageElement.textContent = `You found their ${boat}!`;
                                         // console.log(`P2 ${boat} sunk!`);
                                 };
                         // console.log('there are', p1ShipsSunk)
@@ -937,10 +939,7 @@ const gameActivate = () => {
 
 
 /*----------------------------- Event Listeners -----------------------------*/
-// leftCellEls.forEach(cell => {cell.addEventListener('mouseover', )});
 
-// rightCellEls.forEach(cell => {cell.addEventListener('click', handleRightClick)
-// });
 
 //Event listener for the P1 button of the game:
 p1ButtonElement.addEventListener('click', (event) => {
@@ -982,22 +981,19 @@ startButtonElement.addEventListener('click', (event) => {
 
 resetButtonElement.addEventListener('click', (event) => {
         resetGame();
-        init();
-        
+        init();     
 });
 
-// leftGridElement.addEventListener('mouseover', (event) => {
-//         leftGridElement
-// })
+instructionsButtonElement.addEventListener('click', () => {
+        instructionsElement.classList.toggle('hidden');
+})
+
 
 /*------------------------------- Page Load ------------------------------*/
 
 //TO DO:
-//1. Position Player 1 and Player 2 buttons.
-//2. Position satert and reset buttons.
-//3. Style the board so it looks cute - do I want to make it using bugs??
-//4. 
-
-
-
+//4. Delete all dead code.
+//5. Give all imgs an alt text.
+//6. Write out a README for the game.
+//7. add a cover to the board when buttons come up.
 

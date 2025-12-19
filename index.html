@@ -7,32 +7,67 @@
     <script defer src="./js/app.js"></script>
     <link rel ="stylesheet" href="./css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Fjalla+One&family=Londrina+Shadow&family=Mansalva&family=Poller+One&family=Roboto:ital,wght@0,100..900;1,100..900&family=Shadows+Into+Light&family=Wellfleet&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Bungee&family=Fjalla+One&family=Freckle+Face&family=Londrina+Shadow&family=Mansalva&family=Poller+One&family=Ribeye+Marrow&family=Roboto:ital,wght@0,100..900;1,100..900&family=Shadows+Into+Light&family=Wellfleet&display=swap" rel="stylesheet">
-</head>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Bungee&family=Chewy&family=Fjalla+One&family=Freckle+Face&family=Londrina+Shadow&family=Mansalva&family=Patrick+Hand&family=Poller+One&family=Ribeye+Marrow&family=Roboto:ital,wght@0,100..900;1,100..900&family=Shadows+Into+Light&family=Wellfleet&display=swap" rel="stylesheet">
 <body>
-    <h1 id="main-title">Beetleships</h1>
-    <p class='messages' id="main-messages">Get ready to play!</p>
+    <div id="title-div">
+        <h1 id="main-title">Beetleships</h1>
+        <p class='messages' id="main-messages">Get ready to play!</p>
+        <button class="button game-buttons" id="start-button">Start Game</button>
+    </div>
     <div id="grid-wrapper">
         <div class ="column hidden" id="left-grid-wrapper">
             <h2 class="grid-title" id="left-grid-title">Player 1 gameboard</h2>
             <div class="grid custom-cursor" id="left-grid"></div>
-             <p class="messages" id="p1-messages"></p>
-            <button class="button hidden" id="p1-button">Player 1 turn</button>
+            <p class="messages player-messages" id="p1-messages"></p>
+            <div class="cover"></div>
         </div>
         <div class ="column hidden" id="right-grid-wrapper">
             <h2 class="grid-title" id="right-grid-title">Player 2 gameboard</h2>
             <div class="grid custom-cursor" id ="right-grid"></div>
-            <p class="messages" id="p2-messages"></p>
+            <p class="messages player-messages" id="p2-messages"></p>
+            <div class="cover"></div>
         </div>
-            <button class="button hidden" id="p2-button">Player 2 turn</button>
+        <div class="player-buttons button p1"><button class="button game-buttons player hidden" id="p1-button">Player 1 </br> turn</button></div>
+        <div class="player-buttons button p2"><button class="button game-buttons player hidden" id="p2-button">Player 2 </br> turn</button></div>
     </div>
-    <div id="game-buttons">
-        <button class="button game-buttons" id="start-button">Start Game</button>
-        <button class="button game-buttons hidden" id="reset-button">Reset Game</button> 
+    <div id="buttons div">
+    </div>
+    <button class="button game-buttons hidden" id="reset-button">Reset Game</button> 
+    <button id="instructions-button" class="button game-buttons">Instructions</button>
+    <div id="instructions-section" class="instructions hidden">
+        <h2 id="instructions-title">Instructions</h2>
+            <h3>Welcome to Beetleships!</h3>  
+            <h3>A competitive insect discovery game</h3>   
+            <h4>THE STORY:</h4>
+                    <p>
+                        <ul>
+                        <li>You are a daring explorer deep in the jungles of Indonesia, searching for undiscovered insect species.</li>
+                        <li>You’ve identified five brand-new species — but you’re not alone.</li>
+                        <li>A rival explorer is also in the area and has discovered the same rare insects.</li>
+                        <li>Only one of you can claim the scientific glory.</li>
+                        </ul>
+                    </p>
+                <h4>YOUR MISSION:</h4>
+                    <p>
+                        <ul>
+                            <li>Find and capture all five of your rival’s insects before they find yours.</li>
+                            <li>Be the first player to locate and capture all five insect species hidden on your opponent’s jungle grid and you win the game!</li>
+                        </ul>
+                    </p>
+                <h4>HOW TO PLAY:</h4>
+                    <p>
+                        <ol>
+                            <li>Start the game: Each player is given a jungle grid with five hidden insect species, randomly placed.</li>
+                            <li>Take turns exploring: Player 1 goes first, then players alternate turns.</li>
+                            <li>Search the jungle: On your turn, click a square on your opponent’s grid to search for insects.</li>
+                            <li>Hit or Miss: If you get a hit, you're on to somethinng! If you get a miss, you’ve searched plain jungle.</li>
+                            <li>End your turn: After your search, both boards are covered and a Next Player button appears.</li>
+                            <li>Switch players: The next player should only click the button once the other player has looked away.</li>
+                            <li>Capture species: When all squares of an insect are revealed, that species is captured.</li>
+                            <li>Win the game: The first explorer to capture all five of their rival’s insect species wins!</li>
+                        </ol>
+                    </p>
     </div>
 </body>
 </html>

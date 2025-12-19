@@ -9,13 +9,50 @@ body {
     background-size: cover;
 }
 
-p {
-    left:20px;
-    font-family: "Bungee", serif;
-    font-size: 21px;
-    text-shadow: 2px 2px #8d4901;
-    color: rgba(239, 190, 86, 0.803);
+ul {
+    list-style: none;
+}
+h2 {
     text-align: center;
+    padding: 0 40px 0 40px;
+    font-family: "Freckle Face", system-ui;
+    font-size: 40px;
+}
+h3 {
+    text-align: left;
+    padding: 0 40px 0 40px;
+    font-family: "Bungee", serif;
+}
+h4 {
+    text-align: left;
+    padding: 0 40px 0 40px;
+    font-family: "Bungee", serif;
+}
+
+li {  
+    font-family: "Patrick Hand", cursive;
+    padding: 5px auto;
+}
+
+#instructions-section {
+     background-color: rgba(150, 63, 1, 0.9);
+    padding: 0px 10px 20px 10px;
+    border-radius: 15px;
+    border: 2px solid rgb(106, 47, 8);
+    justify-content: center;
+    text-align: left;
+    align-items: center;
+    display: table;
+    margin: 20px auto;
+    width: 50%
+}
+
+#instructions-section.hidden {
+    display: none;
+}
+
+#title-div {
+    left: 70px;
 }
 
 #main-title {
@@ -27,45 +64,37 @@ p {
     font-size: 70px;
     color: rgb(0, 0, 0);
     position:relative;
-    left: -28px;
 }
 
 #main-messages {
     display: flex;
     justify-content: center;
     text-align: center;
-    width: 91%;
+    width: 100%;
     font-size: 28px;
 }
 
 .messages {
+     font-family: "Bungee", serif;
+    font-size: 21px;
+    text-shadow: 2px 2px #8d4901;
+    color: rgba(239, 190, 86, 0.803);
+    text-align: center;
     height: 20px;
     width: 60%;
-    font-family: "Bungee", serif;
     position: relative;
     text-align: center;
 }
 
-
-.bbh-bartle-regular {
-  font-family: "BBH Bartle", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-.bungee-regular {
-  font-family: "Bungee", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-.ribeye-marrow-regular {
-  font-family: "Ribeye Marrow", serif;
-  font-weight: 400;
-  font-style: normal;
-}
-.freckle-face-regular {
-  font-family: "Freckle Face", system-ui;
-  font-weight: 400;
-  font-style: normal;
+.player-messages {
+    background-color: rgba(150, 63, 1, 0.9);
+    padding: 20px 10px;
+    border-radius: 15px;
+    border: 2px solid rgb(106, 47, 8);
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
 }
 
 #grid-wrapper {
@@ -125,11 +154,12 @@ p {
 .grid-title {
     display: flex;
     flex-wrap: wrap;
-    background-color: rgba(150, 63, 1, 0.847);
+    background-color: rgba(150, 63, 1, 0.9);
     padding: 10px 10px;
     border-radius: 15px;
     border: 2px solid rgb(106, 47, 8);
     text-transform: uppercase;
+    font-family: "Bungee", serif;
 }
 
 .cell.ship {
@@ -145,10 +175,29 @@ p {
     color: black;
 }
 
-#game-buttons {
-    position: relative;
-    left: -20px;
+#buttons-div {
     font-size: 26px;
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.player-buttons.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    border-radius: 25px;
+    font-size: 60px;
+    height: 70%
+        /* width: 100%; */
+}
+
+.game-buttons.player {
+    font-size: 30px;
+    padding: 15px 30px;
+    border-radius: 60px;
 }
 
 .game-buttons {
@@ -165,35 +214,6 @@ p {
     margin: 20px
 }
 
-#p1-button {
-    border-radius: 5px;
-    background-color: green;
-    border: 2px solid rgb(16, 80, 16);
-    box-shadow:inset;
-    size: auto;
-    transition: 0.5s;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    position: fixed;
-    top: 42%;
-    left: 15%;
-    
-}
-#p2-button {
-    border-radius: 5px;
-    background-color: green;
-    border: 2px solid rgb(16, 80, 16);
-    box-shadow:inset;
-    size: auto;
-    transition: 0.5s;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    position: absolute;
-    top: 42%;
-    transform: translateX(183%);
-    left: 45%;
-}
-
 .game-buttons:hover { 
     letter-spacing: 4px;
     background-color: rgba(201, 130, 59, 0.883);
@@ -201,11 +221,19 @@ p {
     cursor: pointer;
 }
 
+#p1-button {
 
+}
+
+#p2-button {
+
+}
 
 .hidden {
     display: none;
 }
+
+
 
 .bug {
     position: center;
@@ -226,3 +254,35 @@ p {
     cursor: url("/Assets/magnifying-glass.png") 16 16, auto;
     /* cursor: pointer; */
 }
+
+.bbh-bartle-regular {
+  font-family: "BBH Bartle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.bungee-regular {
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.ribeye-marrow-regular {
+  font-family: "Ribeye Marrow", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.freckle-face-regular {
+  font-family: "Freckle Face", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+.chewy-regular {
+  font-family: "Chewy", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+.patrick-hand-regular {
+  font-family: "Patrick Hand", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
