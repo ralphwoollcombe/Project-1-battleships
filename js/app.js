@@ -424,10 +424,10 @@ const checkSunkSquares = (boatsunk, boatarr, grid, boat, playershipssunk, boardC
                                 });
                                 if (turn === 'p1') {
                                         p2ShipsSunk += 1;
-                                        p1MessageElement.textContent = `You found their ${boat}!`;
+                                        p1MessageElement.textContent = `You captured their ${boat}!`;
                                 } else if (turn === 'p2') {
                                         p1ShipsSunk += 1;
-                                        p2MessageElement.textContent = `You found their ${boat}!`;
+                                        p2MessageElement.textContent = `You captured their ${boat}!`;
                                 };
                         render();
                         };
